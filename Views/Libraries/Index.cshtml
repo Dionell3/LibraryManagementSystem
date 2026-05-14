@@ -1,0 +1,39 @@
+@model IEnumerable<LibraryManagementSystem.Models.Library>
+
+@{
+    ViewData["Title"] = "Libraries";
+}
+
+<h1>Libraries</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">+ Add New Library</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Operating Hours</th>
+            <th>Contact Details</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Location</td>
+                <td>@item.OperatingHours</td>
+                <td>@item.ContactDetails</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.LibraryID" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Edit" asp-route-id="@item.LibraryID" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.LibraryID" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

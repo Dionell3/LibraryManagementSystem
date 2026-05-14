@@ -1,0 +1,48 @@
+@model LibraryManagementSystem.Models.Library
+
+@{
+    ViewData["Title"] = "Edit Library";
+}
+
+<h1>Edit Library</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="LibraryID" />
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OperatingHours" class="form-label"></label>
+                <input asp-for="OperatingHours" class="form-control" />
+                <span asp-validation-for="OperatingHours" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ContactDetails" class="form-label"></label>
+                <input asp-for="ContactDetails" class="form-control" />
+                <span asp-validation-for="ContactDetails" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

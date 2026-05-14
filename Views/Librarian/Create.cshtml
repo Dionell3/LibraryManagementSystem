@@ -1,0 +1,71 @@
+@model LibraryManagementSystem.Models.Librarian
+
+@{
+    ViewData["Title"] = "Add New Librarian";
+}
+
+<h1>Add New Librarian</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="EmployeeID" class="form-label"></label>
+                <input asp-for="EmployeeID" class="form-control" placeholder="e.g. KOI-LIB-001" />
+                <span asp-validation-for="EmployeeID" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" type="email" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Phone" class="form-label"></label>
+                <input asp-for="Phone" class="form-control" placeholder="+61 4XX XXX XXX" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Position" class="form-label"></label>
+                <select asp-for="Position" class="form-control">
+                    <option value="">-- Select Position --</option>
+                    <option value="Head Librarian">Head Librarian</option>
+                    <option value="Senior Librarian">Senior Librarian</option>
+                    <option value="Librarian">Librarian</option>
+                    <option value="Library Assistant">Library Assistant</option>
+                </select>
+                <span asp-validation-for="Position" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="HireDate" class="form-label"></label>
+                <input asp-for="HireDate" class="form-control" type="date" />
+                <span asp-validation-for="HireDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

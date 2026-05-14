@@ -1,0 +1,25 @@
+@model LibraryManagementSystem.Models.Library
+
+@{
+    ViewData["Title"] = "Library Details";
+}
+
+<h1>Library Details</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+
+    <dt class="col-sm-3">Location</dt>
+    <dd class="col-sm-9">@Model.Location</dd>
+
+    <dt class="col-sm-3">Operating Hours</dt>
+    <dd class="col-sm-9">@Model.OperatingHours</dd>
+
+    <dt class="col-sm-3">Contact Details</dt>
+    <dd class="col-sm-9">@Model.ContactDetails</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.LibraryID" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

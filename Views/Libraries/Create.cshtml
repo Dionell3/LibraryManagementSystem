@@ -1,0 +1,47 @@
+@model LibraryManagementSystem.Models.Library
+
+@{
+    ViewData["Title"] = "Add New Library";
+}
+
+<h1>Add New Library</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" placeholder="e.g. KOI Central Library" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Location" class="form-label"></label>
+                <input asp-for="Location" class="form-control" placeholder="e.g. Level 1, 525 George Street, Sydney" />
+                <span asp-validation-for="Location" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="OperatingHours" class="form-label"></label>
+                <input asp-for="OperatingHours" class="form-control" placeholder="e.g. Mon-Fri 9am-6pm, Sat 10am-4pm" />
+                <span asp-validation-for="OperatingHours" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ContactDetails" class="form-label"></label>
+                <input asp-for="ContactDetails" class="form-control" placeholder="e.g. +61 2 9283 3583 / library@koi.edu.au" />
+                <span asp-validation-for="ContactDetails" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,31 @@
+@model LibraryManagementSystem.Models.Librarian
+
+@{
+    ViewData["Title"] = "Librarian Details";
+}
+
+<h1>Librarian Details</h1>
+<hr />
+
+<dl class="row">
+    <dt class="col-sm-3">Employee ID</dt>
+    <dd class="col-sm-9">@Model.EmployeeID</dd>
+
+    <dt class="col-sm-3">Full Name</dt>
+    <dd class="col-sm-9">@Model.FullName</dd>
+
+    <dt class="col-sm-3">Email</dt>
+    <dd class="col-sm-9">@Model.Email</dd>
+
+    <dt class="col-sm-3">Phone</dt>
+    <dd class="col-sm-9">@Model.Phone</dd>
+
+    <dt class="col-sm-3">Position</dt>
+    <dd class="col-sm-9">@Model.Position</dd>
+
+    <dt class="col-sm-3">Hire Date</dt>
+    <dd class="col-sm-9">@Model.HireDate.ToString("dd MMM yyyy")</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.LibrarianID" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

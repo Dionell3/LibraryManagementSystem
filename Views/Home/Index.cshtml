@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero-section">
+    <h1>Library Management System</h1>
+    <p>
+        A dynamic MVC web application designed to help librarians manage books,
+        members, borrowing records, reservations, and library activity.
+    </p>
+
+    <a asp-controller="Home" asp-action="MemberDashboard" class="btn-main">Go to Member Dashboard</a>
+</div>
+
+<div class="section">
+    <h2>Group Details</h2>
+
+    <table class="group-table">
+        <tr>
+            <th>Student ID</th>
+            <th>Student Full Name</th>
+            <th>Role</th>
+        </tr>
+        <tr>
+            <td>20034750</td>
+            <td>Marius Dionell Manalo Diaz</td>
+            <td>Authentication and Security</td>
+        </tr>
+        <tr>
+            <td>20032773</td>
+            <td>Bhaskar Adhikari</td>
+            <td>Library and Book Management</td>
+        </tr>
+        <tr>
+            <td>20031359</td>
+            <td>Nusrat Jahan Lima</td>
+            <td>Borrowing and Transactions</td>
+        </tr>
+        <tr>
+            <td>20036042</td>
+            <td>Sanjeeta Pahari</td>
+            <td>Homepage, Member Dashboard and UI</td>
+        </tr>
+    </table>
+</div>
+
+<div class="card-container">
+    <div class="info-card">
+        <h3>Browse Books</h3>
+        <p>Members can view book details such as title, author, genre and availability.</p>
+    </div>
+
+    <div class="info-card">
+        <h3>Borrow and Reserve</h3>
+        <p>Members can borrow, reserve, renew and track their borrowing status.</p>
+    </div>
+
+    <div class="info-card">
+        <h3>Feedback and Ratings</h3>
+        <p>Members can leave feedback and rate books they have read.</p>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+@model LibraryManagementSystem.Models.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+}
+
+<h1>Book Details</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-3">
+        @if (!string.IsNullOrEmpty(Model.CoverImagePath))
+        {
+            <img src="@Model.CoverImagePath" alt="Cover" class="img-fluid" />
+        }
+        else
+        {
+            <div class="bg-light text-center py-5">No Cover</div>
+        }
+    </div>
+
+    <div class="col-md-9">
+        <dl class="row">
+            <dt class="col-sm-3">Title</dt>
+            <dd class="col-sm-9">@Model.Title</dd>
+
+            <dt class="col-sm-3">Author</dt>
+            <dd class="col-sm-9">@Model.Author</dd>
+
+            <dt class="col-sm-3">Genre</dt>
+            <dd class="col-sm-9">@Model.Genre</dd>
+
+            <dt class="col-sm-3">ISBN</dt>
+            <dd class="col-sm-9">@Model.ISBN</dd>
+
+            <dt class="col-sm-3">Available</dt>
+            <dd class="col-sm-9">
+                @if (Model.IsAvailable)
+                {
+                    <span class="badge bg-success">Yes</span>
+                }
+                else
+                {
+                    <span class="badge bg-danger">No</span>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Summary</dt>
+            <dd class="col-sm-9">@Model.Summary</dd>
+        </dl>
+    </div>
+</div>
+
+@if (User.IsInRole("Librarian"))
+{
+    <a asp-action="Edit" asp-route-id="@Model.BookID" class="btn btn-warning">Edit</a>
+}
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

@@ -32,17 +32,31 @@ using (var scope = app.Services.CreateScope())
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
+    // Create Roles
     if (!await roleManager.RoleExistsAsync("Librarian"))
         await roleManager.CreateAsync(new IdentityRole("Librarian"));
 
     if (!await roleManager.RoleExistsAsync("Member"))
         await roleManager.CreateAsync(new IdentityRole("Member"));
 
-    const string adminEmail = "20032773@students.koi.edu.au";
+    // Your email
+    const string adminEmail = "20034750@students.koi.edu.au";
+
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
-    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Librarian"))
+
+    if (adminUser != null)
     {
-        await userManager.AddToRoleAsync(adminUser, "Librarian");
+        // Add Librarian role
+        if (!await userManager.IsInRoleAsync(adminUser, "Librarian"))
+        {
+            await userManager.AddToRoleAsync(adminUser, "Librarian");
+        }
+
+        // Remove Member role
+        if (await userManager.IsInRoleAsync(adminUser, "Member"))
+        {
+            await userManager.RemoveFromRoleAsync(adminUser, "Member");
+        }
     }
 }
 
@@ -58,19 +72,16 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages()
-   .WithStaticAssets();
+app.MapRazorPages();
 
 app.Run();

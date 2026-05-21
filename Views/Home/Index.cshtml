@@ -1,25 +1,112 @@
-﻿@{
+@{
     ViewData["Title"] = "Home";
 }
 
 <div class="hero-section">
-    <h1>Library Management System</h1>
-    <p>
-        A dynamic MVC web application designed to help librarians manage books,
-        members, borrowing records, reservations, and library activity.
-    </p>
-
-    <a asp-controller="Home" asp-action="MemberDashboard" class="btn-main">Go to Member Dashboard</a>
+    <h1>KOI Library Management System</h1>
+    <p>Your digital gateway to borrowing, reserving and managing books at King's Own Institute.</p>
+    @if (!User.Identity!.IsAuthenticated)
+    {
+        <a asp-area="Identity" asp-page="/Account/Register" class="btn-main" style="margin-right:10px;">Register as Member</a>
+        <a asp-area="Identity" asp-page="/Account/Login" class="btn-main" style="background:transparent;border:2px solid white;color:white;">Log In</a>
+    }
+    else if (User.IsInRole("Member"))
+    {
+        <a asp-controller="Home" asp-action="MemberDashboard" class="btn-main">Go to My Dashboard</a>
+    }
+    else
+    {
+        <a asp-controller="Librarian" asp-action="Dashboard" class="btn-main">Go to Admin Dashboard</a>
+    }
 </div>
 
+<!-- Stats Bar -->
+<div class="dashboard-cards" style="margin-top:20px;">
+    <div class="dashboard-card">
+        <h2>@ViewBag.TotalBooks</h2>
+        <p>Total Books</p>
+    </div>
+    <div class="dashboard-card">
+        <h2 style="color:green;">@ViewBag.AvailableBooks</h2>
+        <p>Available Now</p>
+    </div>
+    <div class="dashboard-card">
+        <h2>@ViewBag.TotalMembers</h2>
+        <p>Members</p>
+    </div>
+    <div class="dashboard-card">
+        <h2>@ViewBag.ActiveBorrows</h2>
+        <p>Books Out</p>
+    </div>
+</div>
+
+<!-- New Arrivals -->
+@if (ViewBag.NewArrivals != null && ((IEnumerable<LibraryManagementSystem.Models.Book>)ViewBag.NewArrivals).Any())
+{
+    <div class="section">
+        <h2>New Arrivals</h2>
+        <div class="lms-book-grid">
+            @foreach (var book in (IEnumerable<LibraryManagementSystem.Models.Book>)ViewBag.NewArrivals)
+            {
+                <div class="lms-book-card">
+                    <div class="lms-book-cover">
+                        @if (!string.IsNullOrEmpty(book.CoverImagePath))
+                        {
+                            <img src="@book.CoverImagePath" alt="@book.Title" />
+                        }
+                        else
+                        {
+                            <span class="lms-book-placeholder">No Cover</span>
+                        }
+                    </div>
+                    <div class="lms-book-info">
+                        <h3>@book.Title</h3>
+                        <p class="lms-book-author">by @book.Author</p>
+                        <div class="lms-book-meta">
+                            <span class="lms-badge lms-badge-genre">@book.Genre</span>
+                            @if (book.IsAvailable)
+                            {
+                                <span class="lms-badge lms-badge-success">Available</span>
+                            }
+                        </div>
+                        <div class="lms-book-actions">
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@book.BookID" class="lms-btn lms-btn-info">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div style="text-align:center;margin-top:20px;">
+            <a asp-controller="Books" asp-action="Index" class="btn-main">View All Books</a>
+        </div>
+    </div>
+}
+
+<!-- Features -->
+<div class="card-container">
+    <div class="info-card">
+        <h3>Browse Books</h3>
+        <p>Search our catalogue by title, author or genre. View availability, summaries and cover images.</p>
+        <a asp-controller="Books" asp-action="Index" class="lms-btn lms-btn-info" style="margin-top:10px;">Browse Now</a>
+    </div>
+    <div class="info-card">
+        <h3>Borrow & Reserve</h3>
+        <p>Members can borrow books online, reserve unavailable titles, and renew loans from their dashboard.</p>
+    </div>
+    <div class="info-card">
+        <h3>Reviews & Ratings</h3>
+        <p>Leave ratings and written feedback for books you have read, and read other members' reviews.</p>
+    </div>
+</div>
+
+<!-- Group Details -->
 <div class="section">
     <h2>Group Details</h2>
-
     <table class="group-table">
         <tr>
             <th>Student ID</th>
             <th>Student Full Name</th>
-            <th>Role</th>
+            <th>Role / Contribution</th>
         </tr>
         <tr>
             <td>20034750</td>
@@ -42,21 +129,4 @@
             <td>Homepage, Member Dashboard and UI</td>
         </tr>
     </table>
-</div>
-
-<div class="card-container">
-    <div class="info-card">
-        <h3>Browse Books</h3>
-        <p>Members can view book details such as title, author, genre and availability.</p>
-    </div>
-
-    <div class="info-card">
-        <h3>Borrow and Reserve</h3>
-        <p>Members can borrow, reserve, renew and track their borrowing status.</p>
-    </div>
-
-    <div class="info-card">
-        <h3>Feedback and Ratings</h3>
-        <p>Members can leave feedback and rate books they have read.</p>
-    </div>
 </div>

@@ -1,0 +1,62 @@
+@model LibraryManagementSystem.Models.Feedback
+@{
+    ViewData["Title"] = "Leave Feedback";
+}
+
+<div class="lms-page lms-form-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Leave Feedback</h1>
+            <p class="lms-subtitle">Rate and review a book you've read.</p>
+        </div>
+        <a asp-action="Index" class="lms-btn lms-btn-secondary">Back to My Feedback</a>
+    </div>
+
+    <div class="lms-card">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="lms-validation-summary"></div>
+
+            <div class="lms-field">
+                <label>Book</label>
+                <select asp-for="BookID" class="lms-input">
+                    <option value="">-- Select a book --</option>
+                    @foreach (var book in (IEnumerable<LibraryManagementSystem.Models.Book>)ViewBag.Books)
+                    {
+                        <option value="@book.BookID" selected="@(book.BookID == (int?)ViewBag.SelectedBookId)">
+                            @book.Title — @book.Author
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="BookID" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Rating">Rating (1–5 stars)</label>
+                <div style="display:flex;gap:10px;align-items:center;margin-top:6px;">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-weight:normal;">
+                            <input type="radio" asp-for="Rating" value="@i" /> @i ★
+                        </label>
+                    }
+                </div>
+                <span asp-validation-for="Rating" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Comment">Comment (optional)</label>
+                <textarea asp-for="Comment" class="lms-input lms-textarea" rows="4" placeholder="Share your thoughts about this book..."></textarea>
+                <span asp-validation-for="Comment" class="lms-error"></span>
+                <span class="lms-hint">Maximum 1000 characters. Your feedback will appear after approval.</span>
+            </div>
+
+            <div class="lms-form-actions">
+                <button type="submit" class="btn-main">Submit Feedback</button>
+                <a asp-action="Index" class="lms-btn lms-btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -1,0 +1,29 @@
+@model LibraryManagementSystem.Models.Member
+@{
+    ViewData["Title"] = "Delete Member";
+}
+
+<div class="lms-page lms-form-page">
+    <div class="lms-page-header">
+        <h1>Delete Member</h1>
+    </div>
+
+    <div class="lms-card lms-danger-card">
+        <div class="lms-alert lms-alert-error">
+            Are you sure you want to delete this member? This action cannot be undone.
+        </div>
+        <dl class="lms-details">
+            <dt>Full Name</dt><dd>@Model.FullName</dd>
+            <dt>Membership Number</dt><dd>@Model.MembershipNumber</dd>
+            <dt>Email</dt><dd>@Model.Email</dd>
+        </dl>
+        <div class="lms-form-actions">
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MemberID" />
+                <button type="submit" class="lms-btn lms-btn-danger">Yes, Delete</button>
+            </form>
+            <a asp-action="Index" class="lms-btn lms-btn-secondary">Cancel</a>
+        </div>
+    </div>
+</div>

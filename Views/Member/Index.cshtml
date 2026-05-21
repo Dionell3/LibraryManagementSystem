@@ -1,0 +1,68 @@
+@model IEnumerable<LibraryManagementSystem.Models.Member>
+@{
+    ViewData["Title"] = "Members";
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Library Members</h1>
+            <p class="lms-subtitle">Manage all registered library members.</p>
+        </div>
+        <a asp-action="Create" class="btn-main">+ Add Member</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="lms-empty">
+            <h3>No Members</h3>
+            <p>No members registered yet.</p>
+            <a asp-action="Create" class="btn-main">+ Add Member</a>
+        </div>
+    }
+    else
+    {
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Membership #</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Member Since</th>
+                        <th>Status</th>
+                        <th class="lms-actions-col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td><strong>@m.MembershipNumber</strong></td>
+                            <td>@m.FullName</td>
+                            <td>@m.Email</td>
+                            <td>@(m.Phone ?? "-")</td>
+                            <td>@m.MemberSince.ToString("dd MMM yyyy")</td>
+                            <td>
+                                @if (m.IsActive)
+                                {
+                                    <span class="lms-badge lms-badge-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="lms-badge lms-badge-warning">Inactive</span>
+                                }
+                            </td>
+                            <td class="lms-actions">
+                                <a asp-action="Details" asp-route-id="@m.MemberID" class="lms-btn lms-btn-info">Details</a>
+                                <a asp-action="Edit" asp-route-id="@m.MemberID" class="lms-btn lms-btn-warning">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@m.MemberID" class="lms-btn lms-btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

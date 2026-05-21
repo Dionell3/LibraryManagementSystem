@@ -1,0 +1,79 @@
+@model LibraryManagementSystem.Models.Member
+@{
+    ViewData["Title"] = "Add Member";
+}
+
+<div class="lms-page lms-form-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Add New Member</h1>
+            <p class="lms-subtitle">Register a new library member.</p>
+        </div>
+        <a asp-action="Index" class="lms-btn lms-btn-secondary">Back to Members</a>
+    </div>
+
+    <div class="lms-card">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="lms-validation-summary"></div>
+
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="lms-input" />
+                    <span asp-validation-for="FirstName" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="lms-input" />
+                    <span asp-validation-for="LastName" class="lms-error"></span>
+                </div>
+            </div>
+
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="MembershipNumber"></label>
+                    <input asp-for="MembershipNumber" class="lms-input" placeholder="e.g. MEM001" />
+                    <span asp-validation-for="MembershipNumber" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="MemberSince"></label>
+                    <input asp-for="MemberSince" class="lms-input" type="date" />
+                    <span asp-validation-for="MemberSince" class="lms-error"></span>
+                </div>
+            </div>
+
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="lms-input" />
+                    <span asp-validation-for="Email" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="lms-input" placeholder="Optional" />
+                    <span asp-validation-for="Phone" class="lms-error"></span>
+                </div>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Address"></label>
+                <input asp-for="Address" class="lms-input" placeholder="Optional" />
+                <span asp-validation-for="Address" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field lms-checkbox-field">
+                <label class="lms-checkbox-label">
+                    <input asp-for="IsActive" type="checkbox" /> Active Member
+                </label>
+            </div>
+
+            <div class="lms-form-actions">
+                <button type="submit" class="btn-main">Create Member</button>
+                <a asp-action="Index" class="lms-btn lms-btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagementSystem.Controllers
 {
-    [Authorize(Roles = "Librarian")]
+    [Authorize(Roles = "Admin,Librarian")]
     public class LibrarianController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,8 +17,15 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Librarian/Dashboard
-        public IActionResult Dashboard()
+        public async Task<IActionResult> Dashboard()
         {
+            var now = DateTime.Now;
+            ViewBag.TotalBooks = await _context.Books.CountAsync();
+            ViewBag.AvailableBooks = await _context.Books.CountAsync(b => b.IsAvailable);
+            ViewBag.TotalMembers = await _context.Members.CountAsync();
+            ViewBag.ActiveBorrows = await _context.BorrowTransactions.CountAsync(t => t.Status == "Borrowed" || t.Status == "Overdue");
+            ViewBag.OverdueBorrows = await _context.BorrowTransactions.CountAsync(t => t.Status == "Overdue" || (t.Status == "Borrowed" && t.DueDate < now));
+            ViewBag.PendingFeedback = await _context.Feedbacks.CountAsync(f => !f.IsApproved);
             return View();
         }
 

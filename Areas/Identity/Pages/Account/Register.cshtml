@@ -1,64 +1,63 @@
-﻿@page
+@page
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+<div class="lms-page lms-form-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Create Account</h1>
+            <p class="lms-subtitle">Register as a library member to borrow and reserve books.</p>
+        </div>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+
+    <div class="lms-card" style="max-width:540px;">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="lms-validation-summary"></div>
+
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="Input.FirstName"></label>
+                    <input asp-for="Input.FirstName" class="lms-input" placeholder="First name" />
+                    <span asp-validation-for="Input.FirstName" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="Input.LastName"></label>
+                    <input asp-for="Input.LastName" class="lms-input" placeholder="Last name" />
+                    <span asp-validation-for="Input.LastName" class="lms-error"></span>
+                </div>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="lms-input" autocomplete="username" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Input.Phone"></label>
+                <input asp-for="Input.Phone" class="lms-input" placeholder="Optional" />
+                <span asp-validation-for="Input.Phone" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="lms-input" autocomplete="new-password" placeholder="Min. 6 characters" type="password" />
+                <span asp-validation-for="Input.Password" class="lms-error"></span>
+            </div>
+
+            <div class="lms-field">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="lms-input" autocomplete="new-password" placeholder="Re-enter password" type="password" />
+                <span asp-validation-for="Input.ConfirmPassword" class="lms-error"></span>
+            </div>
+
+            <div class="lms-form-actions">
+                <button type="submit" class="btn-main">Register</button>
+                <a asp-page="./Login" class="lms-btn lms-btn-secondary">Already have an account?</a>
+            </div>
+        </form>
     </div>
 </div>
 

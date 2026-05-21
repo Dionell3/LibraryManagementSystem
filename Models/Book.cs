@@ -1,7 +1,4 @@
-using Required = System.ComponentModel.DataAnnotations.RequiredAttribute;
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.Build.Framework;
-using static Azure.Core.HttpHeader;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagementSystem.Models
 {
@@ -35,5 +32,9 @@ namespace LibraryManagementSystem.Models
         [StringLength(255)]
         [Display(Name = "Cover Image")]
         public string? CoverImagePath { get; set; }
+
+        public ICollection<BorrowTransaction> BorrowTransactions { get; set; } = new List<BorrowTransaction>();
+        public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
+        public ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
     }
 }

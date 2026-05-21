@@ -1,68 +1,143 @@
-﻿@{
-    ViewData["Title"] = "Member Dashboard";
+@{
+    ViewData["Title"] = "My Dashboard";
 }
 
-<div class="dashboard-header">
-    <h1>Member Dashboard</h1>
-    <p>Welcome, @ViewBag.MemberName. Here is a summary of your library activity.</p>
+<div class="dashboard-header" style="margin-top:20px;">
+    <h1>Welcome, @ViewBag.MemberName!</h1>
+    <p>Here is a summary of your library activity.</p>
 </div>
 
-<div class="dashboard-cards">
+<div class="dashboard-cards" style="margin-top:20px;">
     <div class="dashboard-card">
-        <h2>@ViewBag.AvailableBooks</h2>
-        <p>Available Books</p>
+        <h2 style="color:green;">@ViewBag.AvailableBooks</h2>
+        <p>Books Available</p>
     </div>
-
     <div class="dashboard-card">
         <h2>@ViewBag.BorrowedBooks</h2>
-        <p>Borrowed Books</p>
+        <p>Currently Borrowed</p>
     </div>
-
     <div class="dashboard-card">
         <h2>@ViewBag.ReservedBooks</h2>
-        <p>Reserved Books</p>
+        <p>Reserved</p>
     </div>
-
     <div class="dashboard-card warning">
         <h2>@ViewBag.OverdueBooks</h2>
-        <p>Overdue Books</p>
+        <p>Overdue</p>
     </div>
 </div>
 
-<div class="section">
+@if (ViewBag.OverdueBooks > 0)
+{
+    <div class="lms-alert lms-alert-error" style="margin-top:16px;">
+        You have @ViewBag.OverdueBooks overdue book(s). Please return them as soon as possible to avoid additional fines.
+    </div>
+}
+
+<div class="section" style="margin-top:20px;">
     <h2>Quick Actions</h2>
-
     <div class="quick-links">
-        <a href="#">Browse Available Books</a>
-        <a href="#">View Borrowing History</a>
-        <a href="#">Reserve a Book</a>
-        <a href="#">Leave Book Feedback</a>
+        <a asp-controller="Books" asp-action="Index">Browse Available Books</a>
+        <a asp-controller="Borrow" asp-action="Index">View My Borrows</a>
+        <a asp-controller="Reservation" asp-action="Index">My Reservations</a>
+        <a asp-controller="Feedback" asp-action="Create">Leave Book Feedback</a>
+        <a asp-controller="Member" asp-action="MyProfile">My Profile</a>
     </div>
 </div>
 
-<div class="section">
-    <h2>Recommended Books</h2>
+@if (ViewBag.BorrowHistory != null && ((IEnumerable<LibraryManagementSystem.Models.BorrowTransaction>)ViewBag.BorrowHistory).Any())
+{
+    <div class="section">
+        <h2>Recent Borrowing Activity</h2>
+        <table class="group-table">
+            <tr>
+                <th>Book</th>
+                <th>Borrowed</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Fine</th>
+            </tr>
+            @foreach (var t in (IEnumerable<LibraryManagementSystem.Models.BorrowTransaction>)ViewBag.BorrowHistory)
+            {
+                <tr>
+                    <td><a asp-controller="Books" asp-action="Details" asp-route-id="@t.BookId">@(t.Book?.Title ?? "Unknown")</a></td>
+                    <td>@t.BorrowDate.ToString("dd MMM yyyy")</td>
+                    <td>@t.DueDate.ToString("dd MMM yyyy")</td>
+                    <td>
+                        <span style="color:@(t.Status == "Returned" ? "green" : t.Status == "Overdue" ? "red" : "inherit")">
+                            @t.Status
+                        </span>
+                    </td>
+                    <td>
+                        @if (t.Fine != null)
+                        {
+                            <span style="color:@(t.Fine.IsPaid ? "green" : "red");">
+                                $@t.Fine.Amount.ToString("0.00") @(t.Fine.IsPaid ? "(paid)" : "(unpaid)")
+                            </span>
+                        }
+                        else { <span>-</span> }
+                    </td>
+                </tr>
+            }
+        </table>
+        <div style="margin-top:12px;">
+            <a asp-controller="Borrow" asp-action="Index" class="lms-btn lms-btn-info">View Full History</a>
+        </div>
+    </div>
+}
 
-    <table class="group-table">
-        <tr>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Status</th>
-        </tr>
-        <tr>
-            <td>Introduction to Programming</td>
-            <td>John Smith</td>
-            <td>Available</td>
-        </tr>
-        <tr>
-            <td>Database Systems</td>
-            <td>Mary Brown</td>
-            <td>Available</td>
-        </tr>
-        <tr>
-            <td>Web Development with MVC</td>
-            <td>Ali James</td>
-            <td>Borrowed</td>
-        </tr>
-    </table>
-</div>
+@if (ViewBag.Reservations != null && ((IEnumerable<LibraryManagementSystem.Models.Reservation>)ViewBag.Reservations).Any())
+{
+    <div class="section">
+        <h2>Active Reservations</h2>
+        <table class="group-table">
+            <tr><th>Book</th><th>Reserved On</th><th>Expires</th></tr>
+            @foreach (var r in (IEnumerable<LibraryManagementSystem.Models.Reservation>)ViewBag.Reservations)
+            {
+                <tr>
+                    <td>@(r.Book?.Title ?? "Unknown")</td>
+                    <td>@r.ReservationDate.ToString("dd MMM yyyy")</td>
+                    <td>@(r.ExpiryDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+@if (ViewBag.RecommendedBooks != null && ((IEnumerable<LibraryManagementSystem.Models.Book>)ViewBag.RecommendedBooks).Any())
+{
+    <div class="section">
+        <h2>Available Books You Might Like</h2>
+        <div class="lms-book-grid">
+            @foreach (var book in (IEnumerable<LibraryManagementSystem.Models.Book>)ViewBag.RecommendedBooks)
+            {
+                <div class="lms-book-card">
+                    <div class="lms-book-cover">
+                        @if (!string.IsNullOrEmpty(book.CoverImagePath))
+                        {
+                            <img src="@book.CoverImagePath" alt="@book.Title" />
+                        }
+                        else
+                        {
+                            <span class="lms-book-placeholder">No Cover</span>
+                        }
+                    </div>
+                    <div class="lms-book-info">
+                        <h3>@book.Title</h3>
+                        <p class="lms-book-author">by @book.Author</p>
+                        <div class="lms-book-meta">
+                            <span class="lms-badge lms-badge-genre">@book.Genre</span>
+                        </div>
+                        <div class="lms-book-actions">
+                            <form asp-controller="Borrow" asp-action="BorrowBook" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@book.BookID" />
+                                <button type="submit" class="lms-btn lms-btn-warning">Borrow</button>
+                            </form>
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@book.BookID" class="lms-btn lms-btn-info">Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

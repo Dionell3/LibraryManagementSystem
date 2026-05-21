@@ -1,0 +1,174 @@
+@{
+    ViewData["Title"] = "Library Reports";
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Library Activity Reports</h1>
+            <p class="lms-subtitle">Overview of borrowing trends, overdue books, popular titles and active members.</p>
+        </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="dashboard-cards" style="flex-wrap:wrap;">
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalBooks</h2>
+            <p>Total Books</p>
+        </div>
+        <div class="dashboard-card">
+            <h2 style="color:green;">@ViewBag.AvailableBooks</h2>
+            <p>Available</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalMembers</h2>
+            <p>Members</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalBorrows</h2>
+            <p>Total Borrows</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.ActiveBorrows</h2>
+            <p>Currently Out</p>
+        </div>
+        <div class="dashboard-card warning">
+            <h2>@ViewBag.OverdueBorrows</h2>
+            <p>Overdue</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.RecentBorrows</h2>
+            <p>Borrows (30 days)</p>
+        </div>
+        <div class="dashboard-card warning">
+            <h2>$@(((decimal)ViewBag.UnpaidFines).ToString("0.00"))</h2>
+            <p>Unpaid Fines</p>
+        </div>
+    </div>
+
+    <!-- Overdue Books -->
+    <h2 class="lms-section-title">Overdue Books</h2>
+    @{
+        var overdueList = (IEnumerable<dynamic>)ViewBag.OverdueList;
+    }
+    @if (!overdueList.Any())
+    {
+        <div class="lms-alert lms-alert-success">No overdue books at this time.</div>
+    }
+    else
+    {
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-danger">
+                    <tr><th>Book</th><th>Member</th><th>Due Date</th><th>Days Overdue</th><th>Fine</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in overdueList)
+                    {
+                        int daysOverdue = (int)(DateTime.Now - t.DueDate).TotalDays;
+                        <tr class="table-danger">
+                            <td>@t.Book?.Title</td>
+                            <td>@t.Member?.FullName</td>
+                            <td>@t.DueDate.ToString("dd MMM yyyy")</td>
+                            <td><strong>@daysOverdue day(s)</strong></td>
+                            <td>@(t.Fine != null ? $"${t.Fine.Amount:0.00}" : "-")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <div class="lms-grid-2" style="margin-top:0;">
+        <!-- Most Popular Books -->
+        <div>
+            <h2 class="lms-section-title">Most Borrowed Books</h2>
+            <div class="lms-card">
+                @{
+                    var popularBooks = (IEnumerable<dynamic>)ViewBag.PopularBooks;
+                }
+                @if (!popularBooks.Any())
+                {
+                    <p class="text-muted">No borrowing data yet.</p>
+                }
+                else
+                {
+                    <table class="table table-hover lms-table">
+                        <thead class="table-dark">
+                            <tr><th>#</th><th>Book</th><th>Author</th><th>Borrows</th></tr>
+                        </thead>
+                        <tbody>
+                            @{ int rank = 1; }
+                            @foreach (var item in popularBooks)
+                            {
+                                <tr>
+                                    <td><strong>@rank</strong></td>
+                                    <td>@item.Book.Title</td>
+                                    <td>@item.Book.Author</td>
+                                    <td><span class="lms-badge lms-badge-genre">@item.BorrowCount</span></td>
+                                </tr>
+                                rank++;
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <!-- Most Active Members -->
+        <div>
+            <h2 class="lms-section-title">Most Active Members</h2>
+            <div class="lms-card">
+                @{
+                    var activeMembers = (IEnumerable<dynamic>)ViewBag.ActiveMembers;
+                }
+                @if (!activeMembers.Any())
+                {
+                    <p class="text-muted">No member data yet.</p>
+                }
+                else
+                {
+                    <table class="table table-hover lms-table">
+                        <thead class="table-dark">
+                            <tr><th>#</th><th>Member</th><th>Email</th><th>Borrows</th></tr>
+                        </thead>
+                        <tbody>
+                            @{ int mRank = 1; }
+                            @foreach (var item in activeMembers)
+                            {
+                                <tr>
+                                    <td><strong>@mRank</strong></td>
+                                    <td>@item.Member.FullName</td>
+                                    <td>@item.Member.Email</td>
+                                    <td><span class="lms-badge lms-badge-genre">@item.BorrowCount</span></td>
+                                </tr>
+                                mRank++;
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Fines Summary -->
+    <h2 class="lms-section-title">Fines Summary</h2>
+    <div class="dashboard-cards">
+        <div class="dashboard-card">
+            <h2>$@(((decimal)ViewBag.TotalFines).ToString("0.00"))</h2>
+            <p>Total Fines Issued</p>
+        </div>
+        <div class="dashboard-card warning">
+            <h2>$@(((decimal)ViewBag.UnpaidFines).ToString("0.00"))</h2>
+            <p>Outstanding Fines</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalReservations</h2>
+            <p>Total Reservations</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.ActiveReservations</h2>
+            <p>Active Reservations</p>
+        </div>
+    </div>
+</div>

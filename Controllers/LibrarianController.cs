@@ -50,21 +50,38 @@ namespace LibraryManagementSystem.Controllers
         // GET: Librarian/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new Librarian { EmployeeID = NextEmployeeId(), HireDate = DateTime.Today });
         }
 
         // POST: Librarian/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LibrarianID,EmployeeID,FirstName,LastName,Email,Phone,Position,HireDate")] Librarian librarian)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Phone,Position,HireDate")] Librarian librarian)
         {
+            librarian.EmployeeID = NextEmployeeId();
+            ModelState.Remove(nameof(Librarian.EmployeeID));
+
             if (ModelState.IsValid)
             {
                 _context.Add(librarian);
                 await _context.SaveChangesAsync();
+                TempData["Success"] = $"Librarian {librarian.FullName} added with Employee ID {librarian.EmployeeID}.";
                 return RedirectToAction(nameof(Index));
             }
             return View(librarian);
+        }
+
+        private string NextEmployeeId()
+        {
+            const string prefix = "LIB";
+            var maxNum = _context.Librarians
+                .Where(l => l.EmployeeID != null && l.EmployeeID.StartsWith(prefix))
+                .Select(l => l.EmployeeID!.Substring(prefix.Length))
+                .AsEnumerable()
+                .Select(s => int.TryParse(s, out var n) ? n : 0)
+                .DefaultIfEmpty(0)
+                .Max();
+            return $"{prefix}{(maxNum + 1).ToString("D4")}";
         }
 
         // GET: Librarian/Edit/5

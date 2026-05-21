@@ -1,73 +1,81 @@
 @model LibraryManagementSystem.Models.Librarian
-
 @{
     ViewData["Title"] = "Add New Librarian";
 }
 
-<h1>Add New Librarian</h1>
-<hr />
+<div class="lms-page lms-form-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Add New Librarian</h1>
+            <p class="lms-subtitle">Register a staff member. Employee ID is generated automatically.</p>
+        </div>
+        <a asp-action="Index" class="lms-btn lms-btn-secondary">Back to Librarians</a>
+    </div>
 
-<div class="row">
-    <div class="col-md-6">
+    <div class="lms-card">
         <form asp-action="Create" method="post">
             @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="lms-validation-summary"></div>
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="mb-3">
-                <label asp-for="EmployeeID" class="form-label"></label>
-                <input asp-for="EmployeeID" class="form-control" />
-                <span asp-validation-for="EmployeeID" class="text-danger"></span>
+            <div class="lms-field">
+                <label asp-for="EmployeeID"></label>
+                <input asp-for="EmployeeID" class="lms-input" readonly style="background-color:#F5ECE8;cursor:not-allowed;" />
+                <span class="lms-hint">Auto-generated. Final ID is assigned when you save.</span>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="FirstName" class="form-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="lms-input" />
+                    <span asp-validation-for="FirstName" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="lms-input" />
+                    <span asp-validation-for="LastName" class="lms-error"></span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="LastName" class="form-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="lms-input" type="email" />
+                    <span asp-validation-for="Email" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="Phone"></label>
+                    <input asp-for="Phone" class="lms-input" />
+                    <span asp-validation-for="Phone" class="lms-error"></span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" class="form-control" type="email" />
-                <span asp-validation-for="Email" class="text-danger"></span>
+            <div class="lms-grid-2">
+                <div class="lms-field">
+                    <label asp-for="Position"></label>
+                    <select asp-for="Position" class="lms-input">
+                        <option value="">-- Select Position --</option>
+                        <option value="Head Librarian">Head Librarian</option>
+                        <option value="Senior Librarian">Senior Librarian</option>
+                        <option value="Librarian">Librarian</option>
+                        <option value="Library Assistant">Library Assistant</option>
+                    </select>
+                    <span asp-validation-for="Position" class="lms-error"></span>
+                </div>
+                <div class="lms-field">
+                    <label asp-for="HireDate"></label>
+                    <input asp-for="HireDate" class="lms-input" type="date" />
+                    <span asp-validation-for="HireDate" class="lms-error"></span>
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label asp-for="Phone" class="form-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
+            <div class="lms-form-actions">
+                <button type="submit" class="btn-main">Add Librarian</button>
+                <a asp-action="Index" class="lms-btn lms-btn-secondary">Cancel</a>
             </div>
-
-            <div class="mb-3">
-                <label asp-for="Position" class="form-label"></label>
-                <select asp-for="Position" class="form-control">
-                    <option value="">-- Select Position --</option>
-                    <option value="Head Librarian">Head Librarian</option>
-                    <option value="Senior Librarian">Senior Librarian</option>
-                    <option value="Librarian">Librarian</option>
-                    <option value="Library Assistant">Library Assistant</option>
-                </select>
-                <span asp-validation-for="Position" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label asp-for="HireDate" class="form-label"></label>
-                <input asp-for="HireDate" class="form-control" type="date" />
-                <span asp-validation-for="HireDate" class="text-danger"></span>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
         </form>
     </div>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

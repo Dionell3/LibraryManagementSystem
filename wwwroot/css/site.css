@@ -218,14 +218,35 @@ h2, h3, h4, h5 {
     color: #4E342E !important;
 }
 
-/* Remove blue links */
-a {
+/* Default text links (excluding navbar, buttons, dropdown items) */
+a:not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.btn):not(.btn-main):not(.lms-btn):not(.lms-btn-info):not(.lms-btn-warning):not(.lms-btn-danger):not(.lms-btn-secondary) {
     color: #6D4C41 !important;
 }
 
-    a:hover {
-        color: #4E342E !important;
-    }
+a:not(.nav-link):not(.navbar-brand):not(.dropdown-item):not(.btn):not(.btn-main):not(.lms-btn):not(.lms-btn-info):not(.lms-btn-warning):not(.lms-btn-danger):not(.lms-btn-secondary):hover {
+    color: #4E342E !important;
+}
+
+/* Navbar links stay white on brown navbar */
+.navbar-dark .nav-link,
+.navbar-dark .navbar-brand {
+    color: #EFEBE9 !important;
+}
+
+.navbar-dark .nav-link:hover,
+.navbar-dark .navbar-brand:hover {
+    color: #ffffff !important;
+}
+
+/* Dropdown menu items stay readable */
+.dropdown-item {
+    color: #4E342E !important;
+}
+
+.dropdown-item:hover {
+    color: #4E342E !important;
+    background-color: #F5ECE8 !important;
+}
 
 /* Cards */
 .card {

@@ -74,6 +74,15 @@ namespace LibraryManagementSystem.Data
             modelBuilder.Entity<Fine>()
                 .Property(f => f.Amount)
                 .HasColumnType("decimal(10,2)");
+
+            // Enforce uniqueness on auto-generated business IDs
+            modelBuilder.Entity<Librarian>()
+                .HasIndex(l => l.EmployeeID)
+                .IsUnique();
+
+            modelBuilder.Entity<Member>()
+                .HasIndex(m => m.MembershipNumber)
+                .IsUnique();
         }
     }
 }

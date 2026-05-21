@@ -49,8 +49,9 @@ bld/
 wwwroot/uploads/**/*
 !wwwroot/uploads/**/.gitkeep
 
-# Local secrets
+# Local secrets / per-developer overrides
 secrets.json
+appsettings.Development.json
 appsettings.*.Development.json
 
 # Visual Studio 2017 auto generated files

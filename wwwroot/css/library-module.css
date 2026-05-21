@@ -14,7 +14,7 @@
 }
 
 .lms-page h1 {
-    color: #123c69;
+    color: #4E342E;
     font-size: 32px;
     margin: 0 0 6px 0;
 }
@@ -26,7 +26,7 @@
 }
 
 .lms-section-title {
-    color: #123c69;
+    color: #4E342E;
     margin-top: 35px;
     margin-bottom: 15px;
     font-size: 24px;
@@ -81,7 +81,7 @@
 }
 
     .lms-empty h3 {
-        color: #123c69;
+        color: #4E342E;
         margin-bottom: 10px;
     }
 
@@ -107,7 +107,7 @@
     }
 
 .btn-main {
-    background-color: #123c69;
+    background-color: #4E342E;
     color: white;
     padding: 10px 22px;
     border-radius: 6px;
@@ -120,7 +120,7 @@
 }
 
     .btn-main:hover {
-        background-color: #2a6f97;
+        background-color: #6D4C41;
         color: white;
         text-decoration: none;
     }
@@ -142,31 +142,35 @@
         text-decoration: none;
     }
 
+a.lms-btn,
+.lms-btn-info,
+.lms-btn-warning,
+.lms-btn-danger,
+.lms-btn-secondary {
+    color: #ffffff !important;
+}
+
 .lms-btn-info {
-    background-color: #2a6f97;
-    color: white;
+    background-color: #6D4C41;
 }
 
 .lms-btn-warning {
-    background-color: #f0a500;
-    color: white;
+    background-color: #A1887F;
 }
 
 .lms-btn-danger {
     background-color: #c0392b;
-    color: white;
 }
 
 .lms-btn-secondary {
     background-color: #6c757d;
-    color: white;
 }
 
     .lms-btn-info:hover,
     .lms-btn-warning:hover,
     .lms-btn-danger:hover,
     .lms-btn-secondary:hover {
-        color: white;
+        color: #ffffff !important;
     }
 
 .lms-field {
@@ -176,7 +180,7 @@
     .lms-field label {
         display: block;
         font-weight: 600;
-        color: #123c69;
+        color: #4E342E;
         margin-bottom: 6px;
     }
 
@@ -190,8 +194,8 @@
 }
 
     .lms-input:focus {
-        border-color: #2a6f97;
-        box-shadow: 0 0 0 3px rgba(42, 111, 151, 0.15);
+        border-color: #6D4C41;
+        box-shadow: 0 0 0 3px rgba(109, 76, 65, 0.15);
         outline: none;
     }
 
@@ -277,7 +281,7 @@
 
     .lms-details dt {
         font-weight: 600;
-        color: #123c69;
+        color: #4E342E;
         margin-top: 14px;
         text-transform: uppercase;
         font-size: 13px;
@@ -295,7 +299,7 @@
     }
 
 .lms-details-card h2 {
-    color: #2a6f97;
+    color: #6D4C41;
     margin-bottom: 18px;
 }
 
@@ -317,7 +321,7 @@
 .lms-filter-field label {
     display: block;
     font-weight: 600;
-    color: #123c69;
+    color: #4E342E;
     margin-bottom: 4px;
     font-size: 13px;
     text-transform: uppercase;
@@ -396,7 +400,7 @@
 }
 
     .lms-book-info h3 {
-        color: #123c69;
+        color: #4E342E;
         font-size: 18px;
         margin: 0 0 6px 0;
     }
@@ -450,7 +454,7 @@
 }
 
     .lms-book-detail-info h2 {
-        color: #123c69;
+        color: #4E342E;
         margin: 0 0 8px 0;
     }
 
@@ -483,5 +487,5 @@
 
 .lms-badge-genre {
     background-color: #e0eafc;
-    color: #123c69;
+    color: #4E342E;
 }

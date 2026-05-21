@@ -39,22 +39,38 @@ namespace LibraryManagementSystem.Controllers
         [Authorize(Roles = "Admin,Librarian")]
         public IActionResult Create()
         {
-            return View(new Member { MemberSince = DateTime.Today });
+            return View(new Member { MembershipNumber = NextMembershipNumber(), MemberSince = DateTime.Today });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Librarian")]
-        public async Task<IActionResult> Create([Bind("MembershipNumber,FirstName,LastName,Email,Phone,MemberSince,Address,IsActive")] Member member)
+        public async Task<IActionResult> Create([Bind("FirstName,LastName,Email,Phone,MemberSince,Address,IsActive")] Member member)
         {
+            member.MembershipNumber = NextMembershipNumber();
+            ModelState.Remove(nameof(Member.MembershipNumber));
+
             if (ModelState.IsValid)
             {
                 _context.Add(member);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "Member created successfully.";
+                TempData["Success"] = $"Member {member.FullName} created with Membership Number {member.MembershipNumber}.";
                 return RedirectToAction(nameof(Index));
             }
             return View(member);
+        }
+
+        private string NextMembershipNumber()
+        {
+            const string prefix = "MEM";
+            var maxNum = _context.Members
+                .Where(m => m.MembershipNumber != null && m.MembershipNumber.StartsWith(prefix))
+                .Select(m => m.MembershipNumber!.Substring(prefix.Length))
+                .AsEnumerable()
+                .Select(s => int.TryParse(s, out var n) ? n : 0)
+                .DefaultIfEmpty(0)
+                .Max();
+            return $"{prefix}{(maxNum + 1).ToString("D4")}";
         }
 
         [Authorize(Roles = "Admin,Librarian")]

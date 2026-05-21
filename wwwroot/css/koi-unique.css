@@ -1,468 +1,874 @@
 /* =========================================================
-   KOI Library — Custom identity layer
-   Hand-crafted typography, library-themed accents, micro-animations
+   KOI Library — "Editorial" theme
+   Inspired by Folio Society + A24 + The Public Domain Review.
+   Magazine-style layout, oversized serifs, asymmetric blocks,
+   numbered sections, monospace metadata.
    ========================================================= */
 
 :root {
-  --koi-bark: #3E2723;
-  --koi-cocoa: #4E342E;
-  --koi-mocha: #6D4C41;
-  --koi-caramel: #A1887F;
-  --koi-cream: #FFF8E7;
-  --koi-paper: #FAF3E3;
-  --koi-ink: #2C1810;
-  --koi-gold: #C9A66B;
-  --koi-shadow: 0 6px 22px rgba(62, 39, 35, 0.10);
-  --koi-shadow-hover: 0 12px 30px rgba(62, 39, 35, 0.18);
+    --ink: #0E1116; /* midnight ink, near-black */
+    --ink-soft: #2A2F3A;
+    --paper: #F2EAD3; /* warm parchment */
+    --cream: #FBF7EE; /* card surface */
+    --rule: #1A1F26; /* hard rule lines */
+    --highlight: #D2691E; /* burnt orange spot colour */
+    --highlight2: #9B2226; /* deeper accent for hover / important */
+    --moss: #4A5D3A; /* secondary muted green */
+    --aged: #C8BFA8; /* soft border */
+    --mono-bg: #1A1F26; /* dark surface for accents */
+}
+
+/* ---------- Base ---------- */
+body {
+    background-color: var(--paper) !important;
+    color: var(--ink) !important;
+    font-family: 'Inter', 'IBM Plex Sans', system-ui, -apple-system, sans-serif !important;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.005em;
+}
+
+    /* Editorial subtle grid background */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image: linear-gradient(rgba(14, 17, 22, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(14, 17, 22, 0.025) 1px, transparent 1px);
+        background-size: 60px 60px;
+        z-index: 0;
+    }
+
+main, header, footer {
+    position: relative;
+    z-index: 1;
 }
 
 /* ---------- Typography ---------- */
-body {
-  font-family: 'Lora', 'Inter', Georgia, serif !important;
-  background-color: var(--koi-paper) !important;
-  color: var(--koi-ink) !important;
-  background-image:
-    radial-gradient(circle at 12% 18%, rgba(201, 166, 107, 0.06) 0, transparent 22%),
-    radial-gradient(circle at 88% 82%, rgba(78, 52, 46, 0.05) 0, transparent 22%);
-  background-attachment: fixed;
+h1, h2, h3, h4, .navbar-brand, .hero-section h1 {
+    font-family: 'Fraunces', 'Playfair Display', 'EB Garamond', Georgia, serif !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+    color: var(--ink) !important;
+    line-height: 1.05;
 }
 
-h1, h2, h3, h4, .navbar-brand {
-  font-family: 'Playfair Display', 'Georgia', serif !important;
-  letter-spacing: -0.01em;
+h1 {
+    font-size: 3rem !important;
 }
 
-h1 { font-weight: 800; }
-h2 { font-weight: 700; }
-.lms-subtitle { font-family: 'Lora', serif !important; font-style: italic; color: var(--koi-mocha) !important; }
+h2 {
+    font-size: 2rem !important;
+}
 
-/* ---------- Navbar ---------- */
+h3 {
+    font-size: 1.35rem !important;
+}
+
+p, li, td {
+    font-family: 'Inter', sans-serif !important;
+}
+
+.lms-subtitle {
+    font-family: 'JetBrains Mono', 'Courier New', monospace !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--highlight) !important;
+    font-style: normal !important;
+}
+
+/* ---------- Top "masthead" bar (newspaper-style) ---------- */
 .navbar {
-  background: linear-gradient(135deg, var(--koi-bark) 0%, var(--koi-cocoa) 50%, var(--koi-mocha) 100%) !important;
-  border-bottom: 3px solid var(--koi-gold) !important;
-  box-shadow: 0 2px 16px rgba(62, 39, 35, 0.25);
-  padding: 0.6rem 1rem;
+    background: var(--paper) !important;
+    border-bottom: 2px solid var(--rule) !important;
+    border-top: 1px solid var(--rule) !important;
+    padding: 0.85rem 1.2rem !important;
+    position: relative;
 }
+
+    /* thin "edition" rule under masthead */
+    .navbar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+        height: 1px;
+        background: var(--rule);
+    }
 
 .navbar-brand {
-  font-size: 1.45rem !important;
-  font-weight: 700 !important;
-  color: var(--koi-cream) !important;
-  letter-spacing: 0.03em;
+    color: var(--ink) !important;
+    font-family: 'Fraunces', 'Playfair Display', Georgia, serif !important;
+    font-size: 1.7rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    text-transform: none !important;
+    padding: 0 !important;
 }
 
-.navbar-brand::before {
-  content: "❦ ";
-  color: var(--koi-gold);
-  margin-right: 4px;
+    .navbar-brand::before {
+        content: "K·O·I" !important;
+        color: var(--highlight);
+        margin-right: 6px;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 0.9rem;
+        letter-spacing: 0.08em;
+        vertical-align: middle;
+        position: relative;
+        top: -3px;
+    }
+
+.navbar-dark {
+    background: var(--paper) !important;
 }
 
-.navbar-dark .nav-link {
-  color: rgba(255, 248, 231, 0.85) !important;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 500;
-  font-size: 0.95rem;
-  padding: 0.6rem 0.95rem !important;
-  position: relative;
-  transition: color 0.2s ease;
+    .navbar-dark .nav-link,
+    .navbar .nav-link {
+        color: var(--ink) !important;
+        font-family: 'Inter', sans-serif !important;
+        font-size: 0.82rem !important;
+        font-weight: 600 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.10em !important;
+        padding: 0.55rem 0.95rem !important;
+        border: none;
+        position: relative;
+    }
+
+        .navbar-dark .nav-link:hover,
+        .navbar .nav-link:hover {
+            color: var(--highlight) !important;
+        }
+
+        .navbar-dark .nav-link::after {
+            display: none;
+        }
+
+/* navbar toggler */
+.navbar-toggler {
+    border-color: var(--rule) !important;
 }
 
-.navbar-dark .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 2px;
-  background: var(--koi-gold);
-  transition: width 0.3s ease;
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%230E1116' stroke-width='2' stroke-linecap='round' d='M4 8h22M4 15h22M4 22h22'/%3E%3C/svg%3E") !important;
 }
 
-.navbar-dark .nav-link:hover {
-  color: var(--koi-cream) !important;
-}
-
-.navbar-dark .nav-link:hover::after {
-  width: 60%;
-}
-
-/* ---------- Hero Section ---------- */
+/* ---------- Hero (editorial cover spread) ---------- */
 .hero-section {
-  background:
-    linear-gradient(135deg, rgba(62, 39, 35, 0.92) 0%, rgba(78, 52, 46, 0.88) 100%),
-    repeating-linear-gradient(90deg, rgba(201, 166, 107, 0.04) 0 2px, transparent 2px 14px) !important;
-  border-radius: 18px !important;
-  padding: 70px 50px !important;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(201, 166, 107, 0.25);
+    background: var(--paper) !important;
+    border-top: 4px solid var(--rule) !important;
+    border-bottom: 4px solid var(--rule) !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-radius: 0 !important;
+    padding: 80px 0 70px !important;
+    position: relative;
+    color: var(--ink) !important;
+    margin: 28px -1.5rem 28px !important;
+    box-shadow: none !important;
+    text-align: left !important;
 }
 
-.hero-section::before {
-  content: "“";
-  position: absolute;
-  top: -30px;
-  left: 20px;
-  font-family: 'Playfair Display', serif;
-  font-size: 200px;
-  color: rgba(201, 166, 107, 0.15);
-  line-height: 1;
-}
+    /* "VOL. I · NO. 01" little tag at top */
+    .hero-section::before {
+        content: "VOL. I · NO. 01 · MAY 2026";
+        position: absolute;
+        top: 18px;
+        left: 32px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        color: var(--highlight);
+        background: none !important;
+    }
 
-.hero-section::after {
-  content: "”";
-  position: absolute;
-  bottom: -120px;
-  right: 30px;
-  font-family: 'Playfair Display', serif;
-  font-size: 200px;
-  color: rgba(201, 166, 107, 0.15);
-  line-height: 1;
-}
+    .hero-section::after {
+        content: "EST. 2026";
+        position: absolute;
+        bottom: 18px;
+        right: 32px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.22em;
+        color: var(--ink-soft);
+        background: none !important;
+        font-style: normal !important;
+    }
 
-.hero-section h1 {
-  color: var(--koi-cream) !important;
-  font-size: 2.8rem !important;
-  font-weight: 800 !important;
-  margin-bottom: 12px;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-}
+    .hero-section h1 {
+        color: var(--ink) !important;
+        font-size: clamp(2.6rem, 5vw, 4.4rem) !important;
+        font-weight: 800 !important;
+        margin: 0 32px 18px !important;
+        line-height: 0.98 !important;
+        max-width: 18ch;
+        letter-spacing: -0.03em;
+        text-shadow: none !important;
+    }
 
-.hero-section p {
-  color: rgba(255, 248, 231, 0.92) !important;
-  font-size: 1.15rem !important;
-  font-style: italic;
-  max-width: 720px;
-  margin: 0 auto 28px !important;
-  line-height: 1.6;
-}
+        /* an underline accent on the hero heading */
+        .hero-section h1::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--highlight);
+            margin-top: 22px;
+        }
 
-/* ---------- Buttons ---------- */
+    .hero-section p {
+        color: var(--ink-soft) !important;
+        font-family: 'Fraunces', 'EB Garamond', Georgia, serif !important;
+        font-size: 1.3rem !important;
+        font-style: normal !important;
+        line-height: 1.5 !important;
+        max-width: 56ch;
+        margin: 0 32px 30px !important;
+    }
+
+    .hero-section .btn-main,
+    .hero-section .btn-primary {
+        margin-left: 32px;
+    }
+
+/* ---------- Buttons (sharp, square) ---------- */
 .btn-main, .btn-primary, .btn.btn-primary {
-  background: linear-gradient(135deg, var(--koi-gold) 0%, #b8924f 100%) !important;
-  color: var(--koi-ink) !important;
-  border: none !important;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.03em !important;
-  padding: 12px 28px !important;
-  border-radius: 30px !important;
-  box-shadow: 0 4px 14px rgba(201, 166, 107, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    border: 2px solid var(--ink) !important;
+    border-radius: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+    padding: 14px 30px !important;
+    box-shadow: 4px 4px 0 var(--highlight) !important;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+    position: relative;
 }
 
-.btn-main:hover, .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(201, 166, 107, 0.45) !important;
-  color: var(--koi-ink) !important;
-  background: linear-gradient(135deg, #d4b378 0%, var(--koi-gold) 100%) !important;
-}
+    .btn-main:hover, .btn-primary:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--highlight) !important;
+        background: var(--ink) !important;
+        color: var(--paper) !important;
+    }
+
+    .btn-main:active, .btn-primary:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--highlight) !important;
+    }
 
 .lms-btn {
-  border-radius: 22px !important;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 500 !important;
-  padding: 7px 16px !important;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+    border-radius: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.74rem !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase;
+    padding: 8px 16px !important;
+    border: 1.5px solid var(--ink) !important;
+    transition: all 0.15s ease;
+}
+
+.lms-btn-info {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
+    border-color: var(--ink) !important;
+}
+
+.lms-btn-warning {
+    background: var(--highlight) !important;
+    color: var(--ink) !important;
+    border-color: var(--ink) !important;
+}
+
+.lms-btn-danger {
+    background: var(--highlight2) !important;
+    color: var(--paper) !important;
+    border-color: var(--highlight2) !important;
+}
+
+.lms-btn-secondary {
+    background: transparent !important;
+    color: var(--ink) !important;
+    border-color: var(--ink) !important;
 }
 
 .lms-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(62, 39, 35, 0.15);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0 var(--highlight);
+    color: inherit;
 }
 
-/* ---------- Cards ---------- */
-.lms-card, .info-card, .dashboard-card, .section, .lms-book-card {
-  background: var(--koi-cream) !important;
-  border: 1px solid rgba(201, 166, 107, 0.25) !important;
-  border-radius: 16px !important;
-  box-shadow: var(--koi-shadow) !important;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+.lms-btn-secondary:hover {
+    background: var(--ink) !important;
+    color: var(--paper) !important;
 }
 
-.info-card:hover, .dashboard-card:hover, .lms-book-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--koi-shadow-hover) !important;
-}
-
-/* Decorative top border for cards */
+/* ---------- Cards (Mondrian-style hard rules) ---------- */
+.lms-card,
+.info-card,
+.dashboard-card,
+.section,
+.lms-book-card,
 .lms-dashboard-card {
-  position: relative;
-  background: var(--koi-cream) !important;
-  border: 1px solid rgba(201, 166, 107, 0.25) !important;
-  border-radius: 16px !important;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: var(--cream) !important;
+    border: 2px solid var(--rule) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 30px !important;
+    position: relative;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .info-card::before,
+    .section::before,
+    .lms-card::before {
+        display: none;
+    }
+
+    .info-card:hover,
+    .dashboard-card:hover,
+    .lms-book-card:hover,
+    .lms-dashboard-card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: 6px 6px 0 var(--rule);
+    }
+
+    /* ---------- Section numbering ---------- */
+    .section h2,
+    .lms-section-title {
+        position: relative;
+        color: var(--ink) !important;
+        font-size: 1.8rem !important;
+        margin-bottom: 22px !important;
+        padding-top: 24px !important;
+        border-top: 1px solid var(--rule);
+    }
+
+        .section h2::before,
+        .lms-section-title::before {
+            position: absolute;
+            top: 8px;
+            left: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--highlight);
+            letter-spacing: 0.18em;
+        }
+
+    /* Auto-numbered section labels for selected pages */
+    .section:nth-of-type(1) h2::before {
+        content: "§ 01 · OVERVIEW";
+    }
+
+    .section:nth-of-type(2) h2::before {
+        content: "§ 02 · COLLECTION";
+    }
+
+    .section:nth-of-type(3) h2::before {
+        content: "§ 03 · MEMBERS";
+    }
+
+    .section:nth-of-type(4) h2::before {
+        content: "§ 04 · ACTIVITY";
+    }
+
+    .section h2::after,
+    .lms-section-title::after {
+        display: none;
+    }
+
+/* Dashboard card numbers */
+.lms-dashboard-card {
+    counter-increment: dashcard;
+}
+
+.lms-dashboard-grid {
+    counter-reset: dashcard;
 }
 
 .lms-dashboard-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--koi-gold), var(--koi-mocha));
+    content: counter(dashcard, decimal-leading-zero);
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--highlight);
+    letter-spacing: 0.08em;
 }
 
-.lms-dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--koi-shadow-hover) !important;
+.lms-dashboard-card h2 {
+    font-size: 1.45rem !important;
+    margin-top: 18px !important;
 }
 
-/* ---------- Section titles with ornament ---------- */
-.section h2, .lms-section-title {
-  position: relative;
-  padding-bottom: 12px;
-  margin-bottom: 22px !important;
-  color: var(--koi-cocoa) !important;
+/* ---------- Statistics cards (Penguin Classics block stripe) ---------- */
+.dashboard-card {
+    text-align: left !important;
+    padding: 0 !important;
+    border-top: 18px solid var(--ink) !important;
+    position: relative;
+    overflow: hidden;
 }
 
-.section h2::after, .lms-section-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 50px;
-  height: 3px;
-  background: linear-gradient(90deg, var(--koi-gold), transparent);
-  border-radius: 2px;
+    .dashboard-card > * {
+        padding: 0 22px;
+    }
+
+        .dashboard-card > *:first-child {
+            padding-top: 22px;
+        }
+
+        .dashboard-card > *:last-child {
+            padding-bottom: 22px;
+        }
+
+    .dashboard-card h2 {
+        font-family: 'Fraunces', serif !important;
+        font-size: 3.4rem !important;
+        font-weight: 800 !important;
+        color: var(--ink) !important;
+        margin: 0 !important;
+        line-height: 1;
+        letter-spacing: -0.03em;
+    }
+
+    .dashboard-card p {
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 0.72rem !important;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--ink-soft) !important;
+        margin-top: 10px !important;
+        font-style: normal !important;
+    }
+
+    .dashboard-card.warning {
+        border-top-color: var(--highlight2) !important;
+    }
+
+        .dashboard-card.warning h2 {
+            color: var(--highlight2) !important;
+        }
+
+/* ---------- Tables (newspaper ledger) ---------- */
+.table {
+    border: 2px solid var(--rule) !important;
+    border-radius: 0;
 }
 
-/* ---------- Tables ---------- */
-.table thead th, .group-table th {
-  background: linear-gradient(135deg, var(--koi-bark), var(--koi-cocoa)) !important;
-  color: var(--koi-cream) !important;
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  font-size: 0.82rem;
-  border: none !important;
-  padding: 14px 12px !important;
-}
+    .table thead th,
+    .group-table th {
+        background: var(--ink) !important;
+        color: var(--paper) !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-weight: 500 !important;
+        letter-spacing: 0.14em !important;
+        text-transform: uppercase;
+        font-size: 0.72rem !important;
+        border: none !important;
+        padding: 14px 14px !important;
+    }
 
 .group-table {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: var(--koi-shadow);
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    border: 2px solid var(--rule);
 }
 
-.group-table td {
-  background: var(--koi-cream) !important;
-  border-color: rgba(201, 166, 107, 0.2) !important;
-}
+    .group-table td,
+    .table tbody td {
+        background: var(--cream) !important;
+        border-color: var(--rule) !important;
+        border-style: solid;
+        border-width: 0 0 1px 0 !important;
+        font-family: 'Inter', sans-serif;
+        padding: 14px 14px !important;
+        font-size: 0.92rem;
+    }
 
-.group-table tr:nth-child(even) td {
-  background: var(--koi-paper) !important;
-}
+    .group-table tr:nth-child(even) td,
+    .table tbody tr:nth-child(even) td {
+        background: var(--paper) !important;
+    }
 
-.group-table tr:hover td {
-  background: #f5e9d0 !important;
-}
+    .group-table tr:hover td,
+    .table tbody tr:hover td {
+        background: rgba(210, 105, 30, 0.10) !important;
+    }
 
-/* ---------- Stats cards ---------- */
-.dashboard-card {
-  position: relative;
-  padding: 28px 22px !important;
-  border-radius: 16px !important;
-  text-align: center;
-}
-
-.dashboard-card h2 {
-  font-family: 'Playfair Display', serif !important;
-  font-size: 2.6rem !important;
-  font-weight: 800 !important;
-  color: var(--koi-cocoa) !important;
-  margin: 0 !important;
-  line-height: 1;
-}
-
-.dashboard-card p {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.88rem !important;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--koi-mocha) !important;
-  margin-top: 8px !important;
-}
-
-.dashboard-card.warning h2 { color: #B71C1C !important; }
-
-/* ---------- Footer ---------- */
+/* ---------- Footer (colophon) ---------- */
 .footer {
-  background: linear-gradient(180deg, transparent, rgba(78, 52, 46, 0.08)) !important;
-  border-top: 1px solid rgba(201, 166, 107, 0.3) !important;
-  margin-top: 60px !important;
-  padding-top: 0 !important;
+    background: var(--ink) !important;
+    border-top: 4px solid var(--highlight) !important;
+    color: var(--paper) !important;
+    margin-top: 80px !important;
+    padding: 30px 0 !important;
 }
 
-.footer .container {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: var(--koi-mocha) !important;
-}
+    .footer .container,
+    .footer .container * {
+        color: var(--paper) !important;
+    }
 
-/* ---------- Forms ---------- */
+        .footer .container > div:first-child {
+            font-family: 'Fraunces', serif !important;
+            font-style: italic !important;
+            color: var(--highlight) !important;
+            font-size: 1.25rem !important;
+        }
+
+        .footer .container > div:last-child {
+            font-family: 'JetBrains Mono', monospace !important;
+            font-size: 0.75rem !important;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.75;
+        }
+
+/* ---------- Forms (workbook entry) ---------- */
 .lms-input, .form-control {
-  border: 1px solid rgba(78, 52, 46, 0.2) !important;
-  border-radius: 8px !important;
-  background-color: #FFFEFB !important;
-  font-family: 'Inter', sans-serif !important;
-  transition: border-color 0.2s, box-shadow 0.2s;
+    border: 1.5px solid var(--rule) !important;
+    border-radius: 0 !important;
+    background-color: var(--cream) !important;
+    font-family: 'Inter', sans-serif !important;
+    color: var(--ink) !important;
+    padding: 11px 14px !important;
+    transition: all 0.15s ease;
 }
 
-.lms-input:focus, .form-control:focus {
-  border-color: var(--koi-gold) !important;
-  box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.18) !important;
-  outline: none !important;
-}
+    .lms-input:focus, .form-control:focus {
+        border-color: var(--highlight) !important;
+        box-shadow: 4px 4px 0 var(--highlight) !important;
+        outline: none !important;
+        background-color: #FFFFFF !important;
+    }
 
 .lms-field label, .form-label {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 600 !important;
-  color: var(--koi-cocoa) !important;
-  font-size: 0.88rem;
-  letter-spacing: 0.02em;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 500 !important;
+    color: var(--ink) !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px !important;
 }
 
 /* ---------- Login / Register Card ---------- */
 .lms-form-page .lms-card {
-  background: var(--koi-cream) !important;
-  border-top: 4px solid var(--koi-gold) !important;
+    background: var(--cream) !important;
+    border: 2px solid var(--rule) !important;
+    border-top-width: 14px !important;
+    border-top-color: var(--highlight) !important;
 }
 
-/* ---------- Quote block on home ---------- */
+/* ---------- Literary quote ---------- */
 .koi-quote {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1.3rem;
-  color: var(--koi-mocha);
-  text-align: center;
-  padding: 28px 40px;
-  margin: 30px 0;
-  border-left: 4px solid var(--koi-gold);
-  border-right: 4px solid var(--koi-gold);
-  background: linear-gradient(180deg, var(--koi-cream), var(--koi-paper));
-  border-radius: 4px;
-  position: relative;
+    font-family: 'Fraunces', 'EB Garamond', Georgia, serif !important;
+    font-style: italic;
+    font-size: 1.7rem !important;
+    color: var(--ink) !important;
+    text-align: left;
+    padding: 48px 32px 48px 70px;
+    margin: 40px 0;
+    background: var(--cream);
+    border: 2px solid var(--rule);
+    border-left: 14px solid var(--highlight);
+    position: relative;
+    line-height: 1.35;
+    max-width: 920px;
 }
 
-.koi-quote cite {
-  display: block;
-  margin-top: 14px;
-  font-size: 0.95rem;
-  color: var(--koi-caramel);
-  font-style: normal;
-  letter-spacing: 0.05em;
-}
+    .koi-quote::before {
+        content: "“";
+        position: absolute;
+        top: -10px;
+        left: 24px;
+        font-family: 'Fraunces', serif;
+        font-size: 6rem;
+        color: var(--highlight);
+        line-height: 1;
+    }
 
-.koi-quote cite::before { content: "— "; }
+    .koi-quote::after {
+        display: none !important;
+    }
 
-/* ---------- Badges ---------- */
+    .koi-quote cite {
+        display: block;
+        margin-top: 18px;
+        font-size: 0.78rem;
+        color: var(--ink-soft);
+        font-style: normal;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+
+        .koi-quote cite::before {
+            content: "— ";
+            color: var(--highlight);
+        }
+
+/* ---------- Badges (file tags) ---------- */
 .lms-badge {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 600 !important;
-  border-radius: 12px !important;
-  letter-spacing: 0.05em;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-weight: 500 !important;
+    border-radius: 0 !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase;
+    font-size: 0.68rem !important;
+    padding: 3px 8px !important;
+    border: 1.5px solid var(--ink);
+    background: transparent !important;
+    color: var(--ink) !important;
 }
 
 .lms-badge-genre {
-  background: rgba(201, 166, 107, 0.18) !important;
-  color: var(--koi-cocoa) !important;
+    border-color: var(--highlight) !important;
+    color: var(--highlight) !important;
 }
 
 .lms-badge-success {
-  background: rgba(46, 125, 50, 0.15) !important;
-  color: #1B5E20 !important;
+    border-color: var(--moss) !important;
+    color: var(--moss) !important;
 }
 
 .lms-badge-warning {
-  background: rgba(191, 54, 12, 0.15) !important;
-  color: #BF360C !important;
+    border-color: var(--highlight2) !important;
+    color: var(--highlight2) !important;
 }
-
-/* ---------- Animations ---------- */
-@keyframes koi-fade-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.hero-section, .lms-card, .info-card, .dashboard-card, .lms-dashboard-card, .section, .lms-book-card {
-  animation: koi-fade-up 0.5s ease both;
-}
-
-/* Stagger card animations */
-.dashboard-cards .dashboard-card:nth-child(1) { animation-delay: 0.05s; }
-.dashboard-cards .dashboard-card:nth-child(2) { animation-delay: 0.12s; }
-.dashboard-cards .dashboard-card:nth-child(3) { animation-delay: 0.19s; }
-.dashboard-cards .dashboard-card:nth-child(4) { animation-delay: 0.26s; }
-.card-container .info-card:nth-child(1) { animation-delay: 0.1s; }
-.card-container .info-card:nth-child(2) { animation-delay: 0.2s; }
-.card-container .info-card:nth-child(3) { animation-delay: 0.3s; }
 
 /* ---------- Dropdown ---------- */
 .dropdown-menu {
-  background: var(--koi-cream) !important;
-  border: 1px solid rgba(201, 166, 107, 0.3) !important;
-  border-radius: 10px !important;
-  box-shadow: var(--koi-shadow-hover) !important;
-  padding: 8px !important;
+    background: var(--cream) !important;
+    border: 2px solid var(--rule) !important;
+    border-radius: 0 !important;
+    box-shadow: 4px 4px 0 var(--rule) !important;
+    padding: 6px !important;
+    margin-top: 6px;
 }
 
 .dropdown-item {
-  font-family: 'Inter', sans-serif !important;
-  font-size: 0.92rem !important;
-  border-radius: 6px;
-  padding: 8px 14px !important;
-  color: var(--koi-cocoa) !important;
-  transition: background 0.15s ease;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.82rem !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-radius: 0;
+    padding: 9px 14px !important;
+    color: var(--ink) !important;
+    transition: background 0.12s ease;
 }
 
-.dropdown-item:hover {
-  background: rgba(201, 166, 107, 0.18) !important;
-  color: var(--koi-bark) !important;
-}
+    .dropdown-item:hover {
+        background: var(--ink) !important;
+        color: var(--paper) !important;
+    }
 
 .dropdown-divider {
-  border-color: rgba(201, 166, 107, 0.25) !important;
+    border-color: var(--aged) !important;
+    margin: 4px 6px !important;
 }
 
-/* ---------- Logout button in nav ---------- */
-form.form-inline button[type=submit], .navbar form button {
-  background: rgba(255, 248, 231, 0.12) !important;
-  color: var(--koi-cream) !important;
-  border: 1px solid rgba(201, 166, 107, 0.4) !important;
-  border-radius: 20px !important;
-  padding: 6px 16px !important;
-  font-family: 'Inter', sans-serif !important;
-  transition: background 0.2s ease;
+/* ---------- Navbar logout/user form ---------- */
+.navbar form button,
+#logoutForm button {
+    background: transparent !important;
+    color: var(--ink) !important;
+    border: 1.5px solid var(--ink) !important;
+    border-radius: 0 !important;
+    padding: 7px 14px !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.74rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase;
+    transition: all 0.15s ease;
 }
 
-.navbar form button:hover {
-  background: var(--koi-gold) !important;
-  color: var(--koi-ink) !important;
+    .navbar form button:hover,
+    #logoutForm button:hover {
+        background: var(--ink) !important;
+        color: var(--paper) !important;
+    }
+
+/* User greeting in nav */
+.navbar .nav-item span,
+.navbar a[asp-page*="Manage"],
+.navbar a[href*="Manage"] {
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.76rem !important;
+    letter-spacing: 0.06em;
+    color: var(--ink) !important;
 }
 
-/* ---------- Book cards ---------- */
+/* ---------- Book cards (slim spines) ---------- */
 .lms-book-card {
-  background: var(--koi-cream) !important;
+    background: var(--cream) !important;
+    border: 2px solid var(--rule) !important;
+    border-radius: 0 !important;
+    overflow: hidden;
 }
 
 .lms-book-info h3 {
-  font-family: 'Playfair Display', serif !important;
-  color: var(--koi-cocoa) !important;
+    font-family: 'Fraunces', serif !important;
+    font-size: 1.25rem !important;
+    color: var(--ink) !important;
+    margin-bottom: 6px;
 }
 
 .lms-book-author {
-  font-family: 'Lora', serif !important;
-  color: var(--koi-mocha) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    color: var(--highlight) !important;
+    font-style: normal !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
 }
 
-/* ---------- Responsive tuning ---------- */
-@media (max-width: 768px) {
-  .hero-section { padding: 50px 25px !important; }
-  .hero-section h1 { font-size: 2rem !important; }
-  .hero-section::before, .hero-section::after { font-size: 120px; }
+.lms-book-cover {
+    background: linear-gradient(135deg, var(--ink) 0%, var(--ink-soft) 100%) !important;
+    border-bottom: 2px solid var(--rule);
 }
+
+.lms-book-placeholder {
+    color: var(--highlight) !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-style: normal !important;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.8rem;
+}
+
+/* ---------- Page headers ---------- */
+.lms-page-header h1 {
+    font-family: 'Fraunces', serif !important;
+    font-size: 2.6rem !important;
+    color: var(--ink) !important;
+    border-bottom: none !important;
+    margin-bottom: 6px;
+    letter-spacing: -0.025em;
+}
+
+.lms-page-header {
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 20px;
+    margin-bottom: 30px !important;
+}
+
+/* ---------- Alerts (sidebar notes) ---------- */
+.lms-alert {
+    border-radius: 0 !important;
+    font-family: 'Inter', sans-serif !important;
+    border: 2px solid !important;
+    border-left-width: 8px !important;
+    padding: 14px 18px !important;
+    background: var(--cream) !important;
+}
+
+.lms-alert-success {
+    border-color: var(--moss) !important;
+    color: var(--moss) !important;
+}
+
+.lms-alert-error {
+    border-color: var(--highlight2) !important;
+    color: var(--highlight2) !important;
+}
+
+.lms-alert-warning {
+    border-color: var(--highlight) !important;
+    color: #8B4A0E !important;
+}
+
+/* ---------- Animations ---------- */
+@keyframes koi-print-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-section, .lms-card, .info-card, .dashboard-card,
+.lms-dashboard-card, .section, .lms-book-card {
+    animation: koi-print-in 0.4s ease both;
+}
+
+.dashboard-cards .dashboard-card:nth-child(1) {
+    animation-delay: 0.04s;
+}
+
+.dashboard-cards .dashboard-card:nth-child(2) {
+    animation-delay: 0.10s;
+}
+
+.dashboard-cards .dashboard-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.dashboard-cards .dashboard-card:nth-child(4) {
+    animation-delay: 0.22s;
+}
+
+/* Container fluid: limit width like a periodical column */
+.container-fluid.px-4 {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Group table column intro */
+.section:has(table.group-table) h2::before {
+    content: "§ 03 · MASTHEAD";
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.2rem !important;
+    }
+
+    .hero-section {
+        padding: 56px 0 50px !important;
+    }
+
+        .hero-section h1 {
+            font-size: 2.4rem !important;
+            margin: 0 22px 14px !important;
+        }
+
+        .hero-section p, .hero-section .btn-main {
+            margin-left: 22px !important;
+            margin-right: 22px !important;
+        }
+
+        .hero-section::before, .hero-section::after {
+            font-size: 0.6rem;
+        }
+
+    .dashboard-card h2 {
+        font-size: 2.4rem !important;
+    }
+
+    .koi-quote {
+        font-size: 1.25rem !important;
+        padding-left: 50px;
+    }
+
+        .koi-quote::before {
+            font-size: 4rem;
+        }
+}
+ß

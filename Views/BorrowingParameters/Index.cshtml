@@ -1,0 +1,54 @@
+@model IEnumerable<LibraryManagementSystem.Models.BorrowingParameters>
+@{
+    ViewData["Title"] = "Borrowing Parameters";
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Borrowing Parameters</h1>
+            <p class="lms-subtitle">Configure loan durations, renewal limits, fines and borrowing limits.</p>
+        </div>
+        <a asp-action="Create" class="btn-main">+ Add Configuration</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="lms-empty">
+            <h3>No Parameters Configured</h3>
+            <p>Create a default borrowing configuration to control library operations.</p>
+            <a asp-action="Create" class="btn-main">+ Create Default</a>
+        </div>
+    }
+    else
+    {
+        <div class="lms-grid-2" style="margin-top:0;">
+            @foreach (var p in Model)
+            {
+                <div class="lms-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                        <h2 style="margin:0;color:#123c69;">@p.Label</h2>
+                        <div>
+                            <a asp-action="Edit" asp-route-id="@p.BorrowingParametersID" class="lms-btn lms-btn-warning">Edit</a>
+                            <form asp-action="DeleteConfirmed" method="post" style="display:inline;">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@p.BorrowingParametersID" />
+                                <button type="submit" class="lms-btn lms-btn-danger" onclick="return confirm('Delete this configuration?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    <dl class="lms-details">
+                        <dt>Loan Duration</dt>
+                        <dd>@p.LoanDurationDays days</dd>
+                        <dt>Renewal Limit</dt>
+                        <dd>@p.RenewalLimit renewal(s) per loan</dd>
+                        <dt>Overdue Penalty</dt>
+                        <dd>$@p.OverduePenaltyPerDay per day</dd>
+                        <dt>Max Borrowable Items</dt>
+                        <dd>@p.MaxBorrowableItems books at a time</dd>
+                    </dl>
+                </div>
+            }
+        </div>
+    }
+</div>

@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Encodings.Web;
+using System.ComponentModel.DataAnnotations;
+using LibraryManagementSystem.Data;
 using LibraryManagementSystem.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace LibraryManagementSystem.Areas.Identity.Pages.Account
 {
@@ -19,13 +17,15 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _db;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext db)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -33,21 +33,35 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _db = db;
         }
 
         [BindProperty]
         public InputModel Input { get; set; } = new();
 
         public string? ReturnUrl { get; set; }
-
         public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
         public class InputModel
         {
+            [Required(ErrorMessage = "First name is required.")]
+            [StringLength(50)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; } = "";
+
+            [Required(ErrorMessage = "Last name is required.")]
+            [StringLength(50)]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; } = "";
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; } = "";
+
+            [Phone]
+            [Display(Name = "Phone (optional)")]
+            public string? Phone { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -75,7 +89,6 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
-
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
@@ -84,17 +97,30 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "Member");
-
                     _logger.LogInformation("User created a new account with password.");
+
+                    // Create Member profile
+                    var memberNumber = "MEM" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                    var member = new Member
+                    {
+                        MembershipNumber = memberNumber,
+                        FirstName = Input.FirstName,
+                        LastName = Input.LastName,
+                        Email = Input.Email,
+                        Phone = Input.Phone,
+                        MemberSince = DateTime.Today,
+                        IsActive = true,
+                        UserId = user.Id
+                    };
+                    _db.Members.Add(member);
+                    await _db.SaveChangesAsync();
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
-                {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
             }
 
             return Page();
@@ -115,10 +141,7 @@ namespace LibraryManagementSystem.Areas.Identity.Pages.Account
         private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
-            {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-
             return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }

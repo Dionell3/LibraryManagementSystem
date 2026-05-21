@@ -1,0 +1,98 @@
+@model IEnumerable<LibraryManagementSystem.Models.Feedback>
+@{
+    ViewData["Title"] = "Feedback";
+    var isStaff = User.IsInRole("Admin") || User.IsInRole("Librarian");
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>@(isStaff ? "Manage Feedback" : "My Feedback")</h1>
+            <p class="lms-subtitle">Book ratings and reviews.</p>
+        </div>
+        @if (User.IsInRole("Member"))
+        {
+            <a asp-action="Create" class="btn-main">+ Leave Feedback</a>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="lms-empty">
+            <h3>No Feedback</h3>
+            <p>No feedback submitted yet.</p>
+            @if (User.IsInRole("Member"))
+            {
+                <a asp-action="Create" class="btn-main">Leave Feedback</a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Book</th>
+                        @if (isStaff) { <th>Member</th> }
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        @if (isStaff) { <th>Actions</th> }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var f in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Books" asp-action="Details" asp-route-id="@f.BookID">
+                                    @(f.Book?.Title ?? "Unknown")
+                                </a>
+                            </td>
+                            @if (isStaff) { <td>@(f.Member?.FullName ?? "Unknown")</td> }
+                            <td>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <span style="color:@(i <= f.Rating ? "#f0a500" : "#ddd");">★</span>
+                                }
+                                <small>(@f.Rating/5)</small>
+                            </td>
+                            <td>@(string.IsNullOrEmpty(f.Comment) ? "-" : f.Comment)</td>
+                            <td>@f.SubmittedDate.ToString("dd MMM yyyy")</td>
+                            <td>
+                                @if (f.IsApproved)
+                                {
+                                    <span class="lms-badge lms-badge-success">Approved</span>
+                                }
+                                else
+                                {
+                                    <span class="lms-badge lms-badge-warning">Pending</span>
+                                }
+                            </td>
+                            @if (isStaff)
+                            {
+                                <td class="lms-actions">
+                                    @if (!f.IsApproved)
+                                    {
+                                        <form asp-action="Approve" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@f.FeedbackID" />
+                                            <button type="submit" class="lms-btn lms-btn-info btn-sm">Approve</button>
+                                        </form>
+                                    }
+                                    <form asp-action="Delete" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@f.FeedbackID" />
+                                        <button type="submit" class="lms-btn lms-btn-danger btn-sm" onclick="return confirm('Delete this feedback?')">Delete</button>
+                                    </form>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

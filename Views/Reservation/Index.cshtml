@@ -1,0 +1,81 @@
+@model IEnumerable<LibraryManagementSystem.Models.Reservation>
+@{
+    ViewData["Title"] = "Reservations";
+    var isStaff = User.IsInRole("Admin") || User.IsInRole("Librarian");
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>@(isStaff ? "All Reservations" : "My Reservations")</h1>
+            <p class="lms-subtitle">Manage book reservations.</p>
+        </div>
+        <a asp-controller="Books" asp-action="Index" class="btn-main">Browse Books</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="lms-empty">
+            <h3>No Reservations</h3>
+            <p>No reservations found. Browse books to make a reservation.</p>
+            <a asp-controller="Books" asp-action="Index" class="btn-main">Browse Books</a>
+        </div>
+    }
+    else
+    {
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Book</th>
+                        @if (isStaff) { <th>Member</th> }
+                        <th>Reserved On</th>
+                        <th>Expires</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Books" asp-action="Details" asp-route-id="@r.BookID">
+                                    @(r.Book?.Title ?? "Unknown")
+                                </a>
+                                <small class="text-muted d-block">@r.Book?.Author</small>
+                            </td>
+                            @if (isStaff) { <td>@(r.Member?.FullName ?? "Unknown")</td> }
+                            <td>@r.ReservationDate.ToString("dd MMM yyyy")</td>
+                            <td>@(r.ExpiryDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                            <td>
+                                @{
+                                    var css = r.Status switch { "Fulfilled" => "lms-badge-success", "Cancelled" => "lms-badge-warning", _ => "lms-badge-genre" };
+                                }
+                                <span class="lms-badge @css">@r.Status</span>
+                            </td>
+                            <td class="lms-actions">
+                                @if (r.Status == "Reserved")
+                                {
+                                    <form asp-action="Cancel" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@r.ReservationID" />
+                                        <button type="submit" class="lms-btn lms-btn-danger btn-sm">Cancel</button>
+                                    </form>
+                                    @if (isStaff)
+                                    {
+                                        <form asp-action="Fulfill" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@r.ReservationID" />
+                                            <button type="submit" class="lms-btn lms-btn-info btn-sm">Fulfill</button>
+                                        </form>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

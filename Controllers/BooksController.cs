@@ -42,6 +42,12 @@ namespace LibraryManagementSystem.Controllers
             var book = await _context.Books.FirstOrDefaultAsync(m => m.BookID == id);
             if (book == null) return NotFound();
 
+            ViewBag.Feedbacks = await _context.Feedbacks
+                .Include(f => f.Member)
+                .Where(f => f.BookID == id && f.IsApproved)
+                .OrderByDescending(f => f.SubmittedDate)
+                .ToListAsync();
+
             return View(book);
         }
 

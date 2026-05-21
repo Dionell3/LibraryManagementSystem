@@ -646,7 +646,7 @@ p, li, td {
     color: var(--highlight2) !important;
 }
 
-/* ---------- Dropdown ---------- */
+/* ---------- Dropdown (must sit above everything) ---------- */
 .dropdown-menu {
     background: var(--cream) !important;
     border: 2px solid var(--rule) !important;
@@ -654,6 +654,22 @@ p, li, td {
     box-shadow: 4px 4px 0 var(--rule) !important;
     padding: 6px !important;
     margin-top: 6px;
+    z-index: 99999 !important;
+    position: absolute !important;
+    min-width: 220px !important;
+}
+
+header, .navbar {
+    position: relative !important;
+    z-index: 9000 !important;
+}
+
+.nav-item.dropdown { position: relative !important; z-index: 99999 !important; }
+.navbar, .navbar-collapse, .navbar-nav { overflow: visible !important; }
+
+main { position: relative; z-index: 1 !important; isolation: isolate; }
+.lms-card, .info-card, .dashboard-card, .section, .lms-book-card, .lms-dashboard-card {
+    z-index: auto !important;
 }
 
 .dropdown-item {

@@ -1,0 +1,123 @@
+@model IEnumerable<LibraryManagementSystem.Models.BorrowTransaction>
+@{
+    ViewData["Title"] = "Borrow Transactions";
+    var isStaff = User.IsInRole("Admin") || User.IsInRole("Librarian");
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>@(isStaff ? "All Borrow Transactions" : "My Borrowed Books")</h1>
+            <p class="lms-subtitle">Track borrowing status, renewals and fines.</p>
+        </div>
+        @if (User.IsInRole("Member"))
+        {
+            <a asp-controller="Books" asp-action="Index" class="btn-main">Browse Books</a>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="lms-empty">
+            <h3>No transactions found</h3>
+            <p>@(isStaff ? "No borrow transactions recorded yet." : "You haven't borrowed any books yet.")</p>
+            <a asp-controller="Books" asp-action="Index" class="btn-main">Browse Books</a>
+        </div>
+    }
+    else
+    {
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Book</th>
+                        @if (isStaff) { <th>Member</th> }
+                        <th>Borrowed</th>
+                        <th>Due Date</th>
+                        <th>Returned</th>
+                        <th>Status</th>
+                        <th>Renewals</th>
+                        <th>Fine</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        var isOverdue = (t.Status == "Borrowed" || t.Status == "Overdue") && t.DueDate < DateTime.Now;
+                        <tr class="@(isOverdue ? "table-danger" : t.Status == "Returned" ? "table-success" : "")">
+                            <td>@t.BorrowTransactionId</td>
+                            <td>
+                                <a asp-controller="Books" asp-action="Details" asp-route-id="@t.BookId">
+                                    @(t.Book?.Title ?? "Unknown Book")
+                                </a>
+                            </td>
+                            @if (isStaff)
+                            {
+                                <td>@(t.Member?.FullName ?? "Unknown")</td>
+                            }
+                            <td>@t.BorrowDate.ToString("dd MMM yyyy")</td>
+                            <td>
+                                @t.DueDate.ToString("dd MMM yyyy")
+                                @if (isOverdue)
+                                {
+                                    <span class="lms-badge lms-badge-warning" style="background:#fdecea;color:#c0392b;margin-left:4px;">OVERDUE</span>
+                                }
+                            </td>
+                            <td>@(t.ReturnDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                            <td>
+                                @{
+                                    var badgeCss = t.Status switch {
+                                        "Returned" => "lms-badge-success",
+                                        "Overdue" => "lms-badge-warning",
+                                        "Borrowed" => "lms-badge-genre",
+                                        _ => "lms-badge-secondary"
+                                    };
+                                }
+                                <span class="lms-badge @badgeCss">@t.Status</span>
+                            </td>
+                            <td>@t.RenewalCount</td>
+                            <td>
+                                @if (t.Fine != null)
+                                {
+                                    <span style="color:@(t.Fine.IsPaid ? "green" : "red")">
+                                        $@t.Fine.Amount.ToString("0.00")
+                                        @(t.Fine.IsPaid ? " ✓" : " (unpaid)")
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span style="color:#999;">-</span>
+                                }
+                            </td>
+                            <td class="lms-actions">
+                                @if (t.Status == "Borrowed" || t.Status == "Overdue")
+                                {
+                                    <form asp-action="ReturnBook" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@t.BorrowTransactionId" />
+                                        <button type="submit" class="lms-btn lms-btn-info btn-sm">Return</button>
+                                    </form>
+                                    <form asp-action="RenewBook" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="@t.BorrowTransactionId" />
+                                        <button type="submit" class="lms-btn lms-btn-warning btn-sm">Renew</button>
+                                    </form>
+                                }
+                                @if (isStaff && t.Fine != null && !t.Fine.IsPaid)
+                                {
+                                    <form asp-action="PayFine" method="post" style="display:inline;">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="fineId" value="@t.Fine.FineID" />
+                                        <button type="submit" class="lms-btn lms-btn-secondary btn-sm">Mark Paid</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

@@ -38,6 +38,22 @@ bld/
 # Uncomment if you have tasks that create the project's static files in wwwroot
 #wwwroot/
 
+# macOS metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# User-uploaded files
+wwwroot/uploads/**/*
+!wwwroot/uploads/**/.gitkeep
+
+# Local secrets / per-developer overrides
+secrets.json
+appsettings.Development.json
+appsettings.*.Development.json
+
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 

@@ -1,0 +1,110 @@
+@model LibraryManagementSystem.Models.Member
+@{
+    ViewData["Title"] = "Member Profile";
+    var isStaff = User.IsInRole("Admin") || User.IsInRole("Librarian");
+}
+
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Member Profile</h1>
+            <p class="lms-subtitle">@Model.FullName</p>
+        </div>
+        @if (isStaff)
+        {
+            <div>
+                <a asp-action="Edit" asp-route-id="@Model.MemberID" class="lms-btn lms-btn-warning">Edit</a>
+                <a asp-action="Index" class="lms-btn lms-btn-secondary">Back to Members</a>
+            </div>
+        }
+    </div>
+
+    <div class="lms-grid-2" style="margin-top:0;">
+        <div class="lms-card">
+            <h2 style="color:#2a6f97;margin-bottom:16px;">Personal Information</h2>
+            <dl class="lms-details">
+                <dt>Membership Number</dt>
+                <dd>@Model.MembershipNumber</dd>
+                <dt>Full Name</dt>
+                <dd>@Model.FullName</dd>
+                <dt>Email</dt>
+                <dd>@Model.Email</dd>
+                <dt>Phone</dt>
+                <dd>@(Model.Phone ?? "Not provided")</dd>
+                <dt>Address</dt>
+                <dd>@(Model.Address ?? "Not provided")</dd>
+                <dt>Member Since</dt>
+                <dd>@Model.MemberSince.ToString("dd MMMM yyyy")</dd>
+                <dt>Status</dt>
+                <dd>
+                    @if (Model.IsActive)
+                    {
+                        <span class="lms-badge lms-badge-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="lms-badge lms-badge-warning">Inactive</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+
+        <div>
+            <div class="lms-card" style="margin-bottom:16px;">
+                <h3 style="color:#123c69;margin-bottom:12px;">Borrowing Summary</h3>
+                @{
+                    var activeBorrows = Model.BorrowTransactions.Count(t => t.Status == "Borrowed" || t.Status == "Overdue");
+                    var totalBorrows = Model.BorrowTransactions.Count;
+                    var activeReservations = Model.Reservations.Count(r => r.Status == "Reserved");
+                }
+                <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                    <div class="dashboard-card" style="flex:1;min-width:100px;padding:16px;">
+                        <h2 style="font-size:28px;color:#123c69;">@totalBorrows</h2>
+                        <p>Total Borrows</p>
+                    </div>
+                    <div class="dashboard-card" style="flex:1;min-width:100px;padding:16px;">
+                        <h2 style="font-size:28px;color:#123c69;">@activeBorrows</h2>
+                        <p>Currently Borrowed</p>
+                    </div>
+                    <div class="dashboard-card" style="flex:1;min-width:100px;padding:16px;">
+                        <h2 style="font-size:28px;color:#2a6f97;">@activeReservations</h2>
+                        <p>Reservations</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lms-card">
+                <h3 style="color:#123c69;margin-bottom:12px;">Quick Actions</h3>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <a asp-controller="Borrow" asp-action="Index" class="lms-btn lms-btn-info">View Borrows</a>
+                    <a asp-controller="Reservation" asp-action="Index" class="lms-btn lms-btn-secondary">View Reservations</a>
+                    <a asp-controller="Books" asp-action="Index" class="btn-main">Browse Books</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.BorrowTransactions.Any())
+    {
+        <h2 class="lms-section-title">Borrowing History</h2>
+        <div class="lms-card">
+            <table class="table table-hover lms-table">
+                <thead class="table-dark">
+                    <tr><th>Book</th><th>Borrowed</th><th>Due</th><th>Returned</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model.BorrowTransactions.OrderByDescending(t => t.BorrowDate))
+                    {
+                        <tr>
+                            <td>@(t.Book?.Title ?? "Unknown")</td>
+                            <td>@t.BorrowDate.ToString("dd MMM yyyy")</td>
+                            <td>@t.DueDate.ToString("dd MMM yyyy")</td>
+                            <td>@(t.ReturnDate?.ToString("dd MMM yyyy") ?? "-")</td>
+                            <td><span class="lms-badge @(t.Status == "Returned" ? "lms-badge-success" : t.Status == "Overdue" ? "lms-badge-warning" : "lms-badge-genre")">@t.Status</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

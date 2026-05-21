@@ -1,0 +1,468 @@
+/* =========================================================
+   KOI Library — Custom identity layer
+   Hand-crafted typography, library-themed accents, micro-animations
+   ========================================================= */
+
+:root {
+  --koi-bark: #3E2723;
+  --koi-cocoa: #4E342E;
+  --koi-mocha: #6D4C41;
+  --koi-caramel: #A1887F;
+  --koi-cream: #FFF8E7;
+  --koi-paper: #FAF3E3;
+  --koi-ink: #2C1810;
+  --koi-gold: #C9A66B;
+  --koi-shadow: 0 6px 22px rgba(62, 39, 35, 0.10);
+  --koi-shadow-hover: 0 12px 30px rgba(62, 39, 35, 0.18);
+}
+
+/* ---------- Typography ---------- */
+body {
+  font-family: 'Lora', 'Inter', Georgia, serif !important;
+  background-color: var(--koi-paper) !important;
+  color: var(--koi-ink) !important;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(201, 166, 107, 0.06) 0, transparent 22%),
+    radial-gradient(circle at 88% 82%, rgba(78, 52, 46, 0.05) 0, transparent 22%);
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, .navbar-brand {
+  font-family: 'Playfair Display', 'Georgia', serif !important;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-weight: 800; }
+h2 { font-weight: 700; }
+.lms-subtitle { font-family: 'Lora', serif !important; font-style: italic; color: var(--koi-mocha) !important; }
+
+/* ---------- Navbar ---------- */
+.navbar {
+  background: linear-gradient(135deg, var(--koi-bark) 0%, var(--koi-cocoa) 50%, var(--koi-mocha) 100%) !important;
+  border-bottom: 3px solid var(--koi-gold) !important;
+  box-shadow: 0 2px 16px rgba(62, 39, 35, 0.25);
+  padding: 0.6rem 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.45rem !important;
+  font-weight: 700 !important;
+  color: var(--koi-cream) !important;
+  letter-spacing: 0.03em;
+}
+
+.navbar-brand::before {
+  content: "❦ ";
+  color: var(--koi-gold);
+  margin-right: 4px;
+}
+
+.navbar-dark .nav-link {
+  color: rgba(255, 248, 231, 0.85) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.95rem !important;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.navbar-dark .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--koi-gold);
+  transition: width 0.3s ease;
+}
+
+.navbar-dark .nav-link:hover {
+  color: var(--koi-cream) !important;
+}
+
+.navbar-dark .nav-link:hover::after {
+  width: 60%;
+}
+
+/* ---------- Hero Section ---------- */
+.hero-section {
+  background:
+    linear-gradient(135deg, rgba(62, 39, 35, 0.92) 0%, rgba(78, 52, 46, 0.88) 100%),
+    repeating-linear-gradient(90deg, rgba(201, 166, 107, 0.04) 0 2px, transparent 2px 14px) !important;
+  border-radius: 18px !important;
+  padding: 70px 50px !important;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(201, 166, 107, 0.25);
+}
+
+.hero-section::before {
+  content: "“";
+  position: absolute;
+  top: -30px;
+  left: 20px;
+  font-family: 'Playfair Display', serif;
+  font-size: 200px;
+  color: rgba(201, 166, 107, 0.15);
+  line-height: 1;
+}
+
+.hero-section::after {
+  content: "”";
+  position: absolute;
+  bottom: -120px;
+  right: 30px;
+  font-family: 'Playfair Display', serif;
+  font-size: 200px;
+  color: rgba(201, 166, 107, 0.15);
+  line-height: 1;
+}
+
+.hero-section h1 {
+  color: var(--koi-cream) !important;
+  font-size: 2.8rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 12px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.hero-section p {
+  color: rgba(255, 248, 231, 0.92) !important;
+  font-size: 1.15rem !important;
+  font-style: italic;
+  max-width: 720px;
+  margin: 0 auto 28px !important;
+  line-height: 1.6;
+}
+
+/* ---------- Buttons ---------- */
+.btn-main, .btn-primary, .btn.btn-primary {
+  background: linear-gradient(135deg, var(--koi-gold) 0%, #b8924f 100%) !important;
+  color: var(--koi-ink) !important;
+  border: none !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em !important;
+  padding: 12px 28px !important;
+  border-radius: 30px !important;
+  box-shadow: 0 4px 14px rgba(201, 166, 107, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-main:hover, .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(201, 166, 107, 0.45) !important;
+  color: var(--koi-ink) !important;
+  background: linear-gradient(135deg, #d4b378 0%, var(--koi-gold) 100%) !important;
+}
+
+.lms-btn {
+  border-radius: 22px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 500 !important;
+  padding: 7px 16px !important;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lms-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(62, 39, 35, 0.15);
+}
+
+/* ---------- Cards ---------- */
+.lms-card, .info-card, .dashboard-card, .section, .lms-book-card {
+  background: var(--koi-cream) !important;
+  border: 1px solid rgba(201, 166, 107, 0.25) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--koi-shadow) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.info-card:hover, .dashboard-card:hover, .lms-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--koi-shadow-hover) !important;
+}
+
+/* Decorative top border for cards */
+.lms-dashboard-card {
+  position: relative;
+  background: var(--koi-cream) !important;
+  border: 1px solid rgba(201, 166, 107, 0.25) !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lms-dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--koi-gold), var(--koi-mocha));
+}
+
+.lms-dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--koi-shadow-hover) !important;
+}
+
+/* ---------- Section titles with ornament ---------- */
+.section h2, .lms-section-title {
+  position: relative;
+  padding-bottom: 12px;
+  margin-bottom: 22px !important;
+  color: var(--koi-cocoa) !important;
+}
+
+.section h2::after, .lms-section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--koi-gold), transparent);
+  border-radius: 2px;
+}
+
+/* ---------- Tables ---------- */
+.table thead th, .group-table th {
+  background: linear-gradient(135deg, var(--koi-bark), var(--koi-cocoa)) !important;
+  color: var(--koi-cream) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  border: none !important;
+  padding: 14px 12px !important;
+}
+
+.group-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--koi-shadow);
+}
+
+.group-table td {
+  background: var(--koi-cream) !important;
+  border-color: rgba(201, 166, 107, 0.2) !important;
+}
+
+.group-table tr:nth-child(even) td {
+  background: var(--koi-paper) !important;
+}
+
+.group-table tr:hover td {
+  background: #f5e9d0 !important;
+}
+
+/* ---------- Stats cards ---------- */
+.dashboard-card {
+  position: relative;
+  padding: 28px 22px !important;
+  border-radius: 16px !important;
+  text-align: center;
+}
+
+.dashboard-card h2 {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 2.6rem !important;
+  font-weight: 800 !important;
+  color: var(--koi-cocoa) !important;
+  margin: 0 !important;
+  line-height: 1;
+}
+
+.dashboard-card p {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.88rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--koi-mocha) !important;
+  margin-top: 8px !important;
+}
+
+.dashboard-card.warning h2 { color: #B71C1C !important; }
+
+/* ---------- Footer ---------- */
+.footer {
+  background: linear-gradient(180deg, transparent, rgba(78, 52, 46, 0.08)) !important;
+  border-top: 1px solid rgba(201, 166, 107, 0.3) !important;
+  margin-top: 60px !important;
+  padding-top: 0 !important;
+}
+
+.footer .container {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--koi-mocha) !important;
+}
+
+/* ---------- Forms ---------- */
+.lms-input, .form-control {
+  border: 1px solid rgba(78, 52, 46, 0.2) !important;
+  border-radius: 8px !important;
+  background-color: #FFFEFB !important;
+  font-family: 'Inter', sans-serif !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.lms-input:focus, .form-control:focus {
+  border-color: var(--koi-gold) !important;
+  box-shadow: 0 0 0 3px rgba(201, 166, 107, 0.18) !important;
+  outline: none !important;
+}
+
+.lms-field label, .form-label {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  color: var(--koi-cocoa) !important;
+  font-size: 0.88rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Login / Register Card ---------- */
+.lms-form-page .lms-card {
+  background: var(--koi-cream) !important;
+  border-top: 4px solid var(--koi-gold) !important;
+}
+
+/* ---------- Quote block on home ---------- */
+.koi-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--koi-mocha);
+  text-align: center;
+  padding: 28px 40px;
+  margin: 30px 0;
+  border-left: 4px solid var(--koi-gold);
+  border-right: 4px solid var(--koi-gold);
+  background: linear-gradient(180deg, var(--koi-cream), var(--koi-paper));
+  border-radius: 4px;
+  position: relative;
+}
+
+.koi-quote cite {
+  display: block;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: var(--koi-caramel);
+  font-style: normal;
+  letter-spacing: 0.05em;
+}
+
+.koi-quote cite::before { content: "— "; }
+
+/* ---------- Badges ---------- */
+.lms-badge {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  letter-spacing: 0.05em;
+}
+
+.lms-badge-genre {
+  background: rgba(201, 166, 107, 0.18) !important;
+  color: var(--koi-cocoa) !important;
+}
+
+.lms-badge-success {
+  background: rgba(46, 125, 50, 0.15) !important;
+  color: #1B5E20 !important;
+}
+
+.lms-badge-warning {
+  background: rgba(191, 54, 12, 0.15) !important;
+  color: #BF360C !important;
+}
+
+/* ---------- Animations ---------- */
+@keyframes koi-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-section, .lms-card, .info-card, .dashboard-card, .lms-dashboard-card, .section, .lms-book-card {
+  animation: koi-fade-up 0.5s ease both;
+}
+
+/* Stagger card animations */
+.dashboard-cards .dashboard-card:nth-child(1) { animation-delay: 0.05s; }
+.dashboard-cards .dashboard-card:nth-child(2) { animation-delay: 0.12s; }
+.dashboard-cards .dashboard-card:nth-child(3) { animation-delay: 0.19s; }
+.dashboard-cards .dashboard-card:nth-child(4) { animation-delay: 0.26s; }
+.card-container .info-card:nth-child(1) { animation-delay: 0.1s; }
+.card-container .info-card:nth-child(2) { animation-delay: 0.2s; }
+.card-container .info-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* ---------- Dropdown ---------- */
+.dropdown-menu {
+  background: var(--koi-cream) !important;
+  border: 1px solid rgba(201, 166, 107, 0.3) !important;
+  border-radius: 10px !important;
+  box-shadow: var(--koi-shadow-hover) !important;
+  padding: 8px !important;
+}
+
+.dropdown-item {
+  font-family: 'Inter', sans-serif !important;
+  font-size: 0.92rem !important;
+  border-radius: 6px;
+  padding: 8px 14px !important;
+  color: var(--koi-cocoa) !important;
+  transition: background 0.15s ease;
+}
+
+.dropdown-item:hover {
+  background: rgba(201, 166, 107, 0.18) !important;
+  color: var(--koi-bark) !important;
+}
+
+.dropdown-divider {
+  border-color: rgba(201, 166, 107, 0.25) !important;
+}
+
+/* ---------- Logout button in nav ---------- */
+form.form-inline button[type=submit], .navbar form button {
+  background: rgba(255, 248, 231, 0.12) !important;
+  color: var(--koi-cream) !important;
+  border: 1px solid rgba(201, 166, 107, 0.4) !important;
+  border-radius: 20px !important;
+  padding: 6px 16px !important;
+  font-family: 'Inter', sans-serif !important;
+  transition: background 0.2s ease;
+}
+
+.navbar form button:hover {
+  background: var(--koi-gold) !important;
+  color: var(--koi-ink) !important;
+}
+
+/* ---------- Book cards ---------- */
+.lms-book-card {
+  background: var(--koi-cream) !important;
+}
+
+.lms-book-info h3 {
+  font-family: 'Playfair Display', serif !important;
+  color: var(--koi-cocoa) !important;
+}
+
+.lms-book-author {
+  font-family: 'Lora', serif !important;
+  color: var(--koi-mocha) !important;
+}
+
+/* ---------- Responsive tuning ---------- */
+@media (max-width: 768px) {
+  .hero-section { padding: 50px 25px !important; }
+  .hero-section h1 { font-size: 2rem !important; }
+  .hero-section::before, .hero-section::after { font-size: 120px; }
+}

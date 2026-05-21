@@ -6,51 +6,122 @@
     <div class="lms-page-header">
         <div>
             <h1>Librarian Dashboard</h1>
-            <p class="lms-subtitle">Welcome, Librarian! Manage libraries, librarians and books from here.</p>
+            <p class="lms-subtitle">Welcome! Manage all aspects of the library from here.</p>
         </div>
     </div>
 
-    @if (TempData["Success"] != null)
-    {
-        <div class="lms-alert lms-alert-success">@TempData["Success"]</div>
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div class="lms-alert lms-alert-error">@TempData["Error"]</div>
-    }
+    <!-- Stats -->
+    <div class="dashboard-cards" style="flex-wrap:wrap;">
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalBooks</h2>
+            <p>Total Books</p>
+        </div>
+        <div class="dashboard-card">
+            <h2 style="color:green;">@ViewBag.AvailableBooks</h2>
+            <p>Available</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.TotalMembers</h2>
+            <p>Members</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.ActiveBorrows</h2>
+            <p>Active Borrows</p>
+        </div>
+        <div class="dashboard-card warning">
+            <h2>@ViewBag.OverdueBorrows</h2>
+            <p>Overdue</p>
+        </div>
+        <div class="dashboard-card">
+            <h2>@ViewBag.PendingFeedback</h2>
+            <p>Pending Feedback</p>
+        </div>
+    </div>
 
     <div class="lms-dashboard-grid">
 
-        <!-- Libraries Card -->
         <div class="lms-dashboard-card">
             <div class="lms-dashboard-card-icon">🏛️</div>
             <h2>Libraries</h2>
-            <p>Create and manage library profiles, including name, location, operating hours and contact details.</p>
+            <p>Manage library profiles, locations, hours and contact details.</p>
             <div class="lms-dashboard-card-actions">
-                <a asp-controller="Libraries" asp-action="Index" class="btn-main">View All Libraries</a>
-                <a asp-controller="Libraries" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add Library</a>
+                <a asp-controller="Libraries" asp-action="Index" class="btn-main">View Libraries</a>
+                <a asp-controller="Libraries" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add</a>
             </div>
         </div>
 
-        <!-- Librarians Card -->
         <div class="lms-dashboard-card">
             <div class="lms-dashboard-card-icon">👨‍💼</div>
             <h2>Librarians</h2>
-            <p>View, add, edit and remove librarian staff records in the system.</p>
+            <p>View, add, edit and remove library staff records.</p>
             <div class="lms-dashboard-card-actions">
-                <a asp-controller="Librarian" asp-action="Index" class="btn-main">View All Librarians</a>
-                <a asp-controller="Librarian" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add Librarian</a>
+                <a asp-controller="Librarian" asp-action="Index" class="btn-main">View Librarians</a>
+                <a asp-controller="Librarian" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add</a>
             </div>
         </div>
 
-        <!-- Books Card -->
         <div class="lms-dashboard-card">
             <div class="lms-dashboard-card-icon">📚</div>
             <h2>Books</h2>
-            <p>Browse the full book catalogue, add new books, or update existing ones.</p>
+            <p>Manage the book catalogue, upload covers and set availability.</p>
             <div class="lms-dashboard-card-actions">
-                <a asp-controller="Books" asp-action="Index" class="btn-main">View All Books</a>
-                <a asp-controller="Books" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add Book</a>
+                <a asp-controller="Books" asp-action="Index" class="btn-main">View Books</a>
+                <a asp-controller="Books" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">👥</div>
+            <h2>Members</h2>
+            <p>View and manage library member profiles and status.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="Member" asp-action="Index" class="btn-main">View Members</a>
+                <a asp-controller="Member" asp-action="Create" class="lms-btn lms-btn-secondary">+ Add</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">📖</div>
+            <h2>Borrow Transactions</h2>
+            <p>Track all borrowing, returns, renewals and overdue fines.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="Borrow" asp-action="Index" class="btn-main">View Transactions</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">🔖</div>
+            <h2>Reservations</h2>
+            <p>Manage book reservations and fulfil member requests.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="Reservation" asp-action="Index" class="btn-main">View Reservations</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">⭐</div>
+            <h2>Feedback & Ratings</h2>
+            <p>Review, approve or remove member feedback for books.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="Feedback" asp-action="Index" class="btn-main">View Feedback</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">⚙️</div>
+            <h2>Borrowing Parameters</h2>
+            <p>Configure loan durations, renewals, penalties and limits.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="BorrowingParameters" asp-action="Index" class="btn-main">Configure</a>
+            </div>
+        </div>
+
+        <div class="lms-dashboard-card">
+            <div class="lms-dashboard-card-icon">📊</div>
+            <h2>Reports</h2>
+            <p>View borrowing trends, overdue books, popular titles and active members.</p>
+            <div class="lms-dashboard-card-actions">
+                <a asp-controller="Reports" asp-action="Index" class="btn-main">View Reports</a>
             </div>
         </div>
 
@@ -64,7 +135,6 @@
         gap: 1.5rem;
         margin-top: 1.5rem;
     }
-
     .lms-dashboard-card {
         background: #fff;
         border: 1px solid #e2e8f0;
@@ -75,30 +145,8 @@
         flex-direction: column;
         gap: 0.75rem;
     }
-
-    .lms-dashboard-card h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin: 0;
-        color: #1e293b;
-    }
-
-    .lms-dashboard-card p {
-        color: #64748b;
-        font-size: 0.95rem;
-        margin: 0;
-        flex-grow: 1;
-    }
-
-    .lms-dashboard-card-icon {
-        font-size: 2.5rem;
-        line-height: 1;
-    }
-
-    .lms-dashboard-card-actions {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-top: 0.5rem;
-    }
+    .lms-dashboard-card h2 { font-size: 1.3rem; font-weight: 700; margin: 0; color: #1e293b; }
+    .lms-dashboard-card p { color: #64748b; font-size: 0.95rem; margin: 0; flex-grow: 1; }
+    .lms-dashboard-card-icon { font-size: 2.5rem; line-height: 1; }
+    .lms-dashboard-card-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
 </style>

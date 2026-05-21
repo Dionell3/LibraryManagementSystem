@@ -1,58 +1,108 @@
 @model LibraryManagementSystem.Models.Book
-
 @{
-    ViewData["Title"] = "Book Details";
+    ViewData["Title"] = Model.Title;
 }
 
-<h1>Book Details</h1>
-<hr />
-
-<div class="row">
-    <div class="col-md-3">
-        @if (!string.IsNullOrEmpty(Model.CoverImagePath))
-        {
-            <img src="@Model.CoverImagePath" alt="Cover" class="img-fluid" />
-        }
-        else
-        {
-            <div class="bg-light text-center py-5">No Cover</div>
-        }
+<div class="lms-page">
+    <div class="lms-page-header">
+        <div>
+            <h1>Book Details</h1>
+        </div>
+        <a asp-action="Index" class="lms-btn lms-btn-secondary">Back to Catalogue</a>
     </div>
 
-    <div class="col-md-9">
-        <dl class="row">
-            <dt class="col-sm-3">Title</dt>
-            <dd class="col-sm-9">@Model.Title</dd>
-
-            <dt class="col-sm-3">Author</dt>
-            <dd class="col-sm-9">@Model.Author</dd>
-
-            <dt class="col-sm-3">Genre</dt>
-            <dd class="col-sm-9">@Model.Genre</dd>
-
-            <dt class="col-sm-3">ISBN</dt>
-            <dd class="col-sm-9">@Model.ISBN</dd>
-
-            <dt class="col-sm-3">Available</dt>
-            <dd class="col-sm-9">
-                @if (Model.IsAvailable)
+    <div class="lms-card">
+        <div class="lms-book-detail">
+            <div class="lms-book-detail-cover">
+                @if (!string.IsNullOrEmpty(Model.CoverImagePath))
                 {
-                    <span class="badge bg-success">Yes</span>
+                    <img src="@Model.CoverImagePath" alt="@Model.Title" />
                 }
                 else
                 {
-                    <span class="badge bg-danger">No</span>
+                    <div class="lms-book-placeholder-large">
+                        <span class="lms-book-placeholder">No Cover</span>
+                    </div>
                 }
-            </dd>
+            </div>
+            <div class="lms-book-detail-info">
+                <h2>@Model.Title</h2>
+                <p style="font-size:18px;color:#555;font-style:italic;">by @Model.Author</p>
 
-            <dt class="col-sm-3">Summary</dt>
-            <dd class="col-sm-9">@Model.Summary</dd>
-        </dl>
+                <div style="margin-bottom:16px;">
+                    <span class="lms-badge lms-badge-genre">@Model.Genre</span>
+                    @if (Model.IsAvailable)
+                    {
+                        <span class="lms-badge lms-badge-success" style="margin-left:6px;">Available</span>
+                    }
+                    else
+                    {
+                        <span class="lms-badge lms-badge-warning" style="margin-left:6px;">Currently Unavailable</span>
+                    }
+                </div>
+
+                <dl class="lms-details">
+                    <dt>ISBN</dt>
+                    <dd>@Model.ISBN</dd>
+                    @if (!string.IsNullOrEmpty(Model.Summary))
+                    {
+                        <dt>Summary</dt>
+                        <dd>@Model.Summary</dd>
+                    }
+                </dl>
+
+                <div class="lms-form-actions" style="margin-top:24px;">
+                    @if (User.IsInRole("Member"))
+                    {
+                        @if (Model.IsAvailable)
+                        {
+                            <form asp-controller="Borrow" asp-action="BorrowBook" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@Model.BookID" />
+                                <button type="submit" class="btn-main">Borrow This Book</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Reservation" asp-action="Reserve" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="bookId" value="@Model.BookID" />
+                                <button type="submit" class="btn-main">Reserve This Book</button>
+                            </form>
+                        }
+                        <a asp-controller="Feedback" asp-action="Create" asp-route-bookId="@Model.BookID" class="lms-btn lms-btn-secondary">Leave Feedback</a>
+                    }
+                    @if (User.IsInRole("Librarian") || User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@Model.BookID" class="lms-btn lms-btn-warning">Edit Book</a>
+                        <a asp-action="Delete" asp-route-id="@Model.BookID" class="lms-btn lms-btn-danger">Delete</a>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-@if (User.IsInRole("Librarian"))
-{
-    <a asp-action="Edit" asp-route-id="@Model.BookID" class="btn btn-warning">Edit</a>
-}
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    @if (ViewBag.Feedbacks != null && ((IEnumerable<LibraryManagementSystem.Models.Feedback>)ViewBag.Feedbacks).Any())
+    {
+        <h2 class="lms-section-title">Member Reviews</h2>
+        <div class="lms-card">
+            @foreach (var fb in (IEnumerable<LibraryManagementSystem.Models.Feedback>)ViewBag.Feedbacks)
+            {
+                <div style="padding:12px 0;border-bottom:1px solid #eee;">
+                    <div>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span style="color:@(i <= fb.Rating ? "#f0a500" : "#ddd");font-size:18px;">★</span>
+                        }
+                        <strong style="margin-left:8px;">@fb.Member?.FullName</strong>
+                        <span style="color:#999;font-size:13px;margin-left:8px;">@fb.SubmittedDate.ToString("dd MMM yyyy")</span>
+                    </div>
+                    @if (!string.IsNullOrEmpty(fb.Comment))
+                    {
+                        <p style="margin:6px 0 0;">@fb.Comment</p>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

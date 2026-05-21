@@ -52,7 +52,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Create
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public IActionResult Create()
         {
             return View();
@@ -61,7 +61,7 @@ namespace LibraryManagementSystem.Controllers
         // POST: Books/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> Create(
             [Bind("BookID,Title,Author,Genre,ISBN,IsAvailable,Summary")] Book book,
             IFormFile? coverImage)
@@ -81,7 +81,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Edit/5
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -94,7 +94,7 @@ namespace LibraryManagementSystem.Controllers
         // POST: Books/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> Edit(int id,
             [Bind("BookID,Title,Author,Genre,ISBN,IsAvailable,Summary,CoverImagePath")] Book book,
             IFormFile? coverImage)
@@ -124,7 +124,7 @@ namespace LibraryManagementSystem.Controllers
         }
 
         // GET: Books/Delete/5
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -138,7 +138,7 @@ namespace LibraryManagementSystem.Controllers
         // POST: Books/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var book = await _context.Books.FindAsync(id);
